@@ -1,0 +1,22 @@
+{
+  "name": "afeka.internet.kickstart",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "bower": "^1.4.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yoni116/KickStart.git"
+  },
+  "author": "Ariel Levin & Yoni Maymon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yoni116/KickStart/issues"
+  },
+  "homepage": "https://github.com/Yoni116/KickStart"
+}
