@@ -7,10 +7,9 @@
   "private": true,
   "dependencies": {
     "angular": "*",
-    "jquery": "*",
-    "bootstrap": "*",
     "angular-route": "*",
     "angular-resource": "*",
-    "angular-animate": "*"
+    "jquery": "*",
+    "bootstrap": "*"
   }
 }
