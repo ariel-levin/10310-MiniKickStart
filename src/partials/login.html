@@ -1,0 +1,50 @@
+<div class="modal fade" id="loginModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">&times;</button>
+                <h2 class="modal-title">Login</h2>
+            </div>
+
+            <div class="modal-body">
+
+                <form class="form-horizontal" name="loginForm" ng-submit="login(loginForm.$valid)">
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="loginInputEmail">Email</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="email" name="emailAddress" id="loginInputEmail"
+                                   placeholder="Email"
+                                   ng-model="login.email"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   email-validator
+                                   required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="loginInputPass">Password</label>
+                        <div class="col-lg-9">
+                            <input class="form-control" type="password" name="password" id="loginInputPass"
+                                   placeholder="Password"
+                                   ng-model="login.pass"
+                                   ng-model-options="{updateOn: 'blur'}"
+                                   required />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="pull-right modal-btn-div">
+                            <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                            <input type="submit" class="btn btn-danger" value="Login" >
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
