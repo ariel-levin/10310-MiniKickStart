@@ -1,7 +1,7 @@
 var kickstartControllers = angular.module('kickstartControllers', []);
 
-kickstartControllers.controller('mainCtrl', ['$scope', 'User',
-    function ($scope, User) {
+kickstartControllers.controller('mainCtrl', ['$scope',
+    function ($scope) {
 
-
-    }]);
+    }
+]);

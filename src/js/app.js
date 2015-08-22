@@ -14,4 +14,23 @@ kickstartApp.config(['$routeProvider',
             otherwise({
                 redirectTo: '/main'
             });
-    }]);
+    }
+]);
+
+kickstartApp.controller('AppCtrl', ['$scope', 'User',
+    function ($scope, User) {
+
+        $scope.signedIn = false;
+
+        $scope.login = function () {
+            $scope.signedIn = true;
+            alert("logged in");
+        };
+
+        $scope.logout = function () {
+            $scope.signedIn = false;
+            alert("logged out");
+        };
+
+    }
+]);
