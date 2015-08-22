@@ -4,10 +4,6 @@ body {
     margin-top: 70px;
 }
 
-.body-content {
-    border: thick;
-}
-
 
 /********************************
 *   Header / navbar
@@ -77,7 +73,6 @@ body {
 }
 
 #mainCarousel {
-    /*height: 400px;*/
     border-radius: 10px 10px 10px 10px;
     -moz-border-radius: 10px 10px 10px 10px;
     -webkit-border-radius: 10px 10px 10px 10px;
