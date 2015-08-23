@@ -1,1 +1,43 @@
 <div ng-include src="'partials/carousel.html'"></div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="well" id="mainWell">
+            <div class="page-header">
+                <h1>kick<b>start</b> <small>Your ideas matter.</small></h1>
+            </div>
+
+            <p class="lead">
+                We combines the essence of the social enterprise movement with the hacker spirit of high-growth technology startups and gives advice for future entrepreneurs who want to build a big company while creating sustainable value for society at-large. It is coded by Ariel Levin & Yoni Maymon, Software Engineering students from Afeka Academic College of Engineering. Kickstart is free online and world wide.
+            </p>
+
+            <a ng-click="" class="btn btn-large btn-primary">Join Now</a>
+            <a ng-click="" class="btn btn-large btn-link">or login an existing account</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12" id="ourProjectsHeader">
+        <h2><b>Our Projects</b></h2>
+        <p class="lead">Here is a list of our leading projects, you can filter them by the search bar above</p>
+    </div>
+</div>
+
+<div class="row" id="features">
+    <div class="col-sm-4 feature" ng-repeat="project in templateProjects | filter:main.searchText">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">{{project.name}}</h4>
+            </div>
+            <div class="panel-body">
+                <img src="img/thumbs/{{project.thumb}}" alt="{{project.name}}" class="img-circle">
+
+                <p>{{project.desc}}</p>
+
+                <a href="{{project.link}}" class="btn btn-large btn-primary btn-block">Check out</a>
+            </div>
+        </div>
+    </div>
+
+</div>
