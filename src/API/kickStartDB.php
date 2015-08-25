@@ -164,6 +164,24 @@ class  KickStartDB
 
     }
 
+    public function addPic($pid,$path){
+
+        try {
+
+            $query = "INSERT INTO projectpic(ProjectId,Path) VALUES (:pid,:path)";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':path', $path);
+            $this->stmt->bindParam(':pid', $pid);
+            $this->stmt->execute();
+
+        } catch (PDOException $e){
+            $this->stmt = null;
+            $final_result['reason'] = $e->getMessage();
+            return $final_result;
+        }
+
+    }
+
     public function getTopProjects()
     {
         try {
@@ -210,7 +228,7 @@ class  KickStartDB
     function makeDir($path){
 
         if (!file_exists($path)) {
-            mkdir($path, 0777, true);
+           mkdir($path, true);
         }
     }
 

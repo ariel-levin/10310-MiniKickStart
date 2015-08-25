@@ -58,6 +58,8 @@ kickstartApp.controller('AppCtrl', ['$scope', 'User',
             }
         };
 
+;
+
 
         $scope.templateProjects = [
             {
