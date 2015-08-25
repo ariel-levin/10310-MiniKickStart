@@ -167,8 +167,10 @@ class  KickStartDB
     public function getTopProjects()
     {
         try {
-            $query = "SELECT ID,MainPic as thumb, Name, Description, (30-DATEDIFF(CURDATE(),CreatedAt)) AS DaysLeft
+            $query = "SELECT id,MainPic as thumb, name, description, (30-DATEDIFF(CURDATE(),CreatedAt)) AS daysleft, coalesce(money.gatherd,0) as moneybacked
                       FROM projects
+                      LEFT JOIN (
+                      SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
                       WHERE DATE_SUB(CURDATE(),INTERVAL 30 DAY) <= CreatedAt
                       ORDER BY CreatedAt Asc
                       LIMIT 6";

@@ -16,7 +16,7 @@ $projectsPath = '/../projects/';
 $kickStartDB = new KickStartDB($config['host'],$config['username'],$config['password'],$config['dbname']);
 
 
-
+header('Content-Type: application/json');
 $type = $_POST['request'];
 $result = "ERROR";
 switch($type){
