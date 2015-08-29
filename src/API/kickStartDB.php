@@ -55,7 +55,7 @@ class  KickStartDB
     // Checks the user and password for match.
     public function checkUserPassword($user, $pass)
     {
-
+        $result['status'] = "Unauthorized";
         try {
             if ($user == "" || $pass == "")
                 return "Wrong UserName Or Password";
@@ -70,7 +70,10 @@ class  KickStartDB
 
             if ($this->stmt->rowCount() > 0)
                 return $res;
-            return "Wrong UserName Or Password";
+            else {
+                $result['reason'] = "Wrong UserName Or Password";
+                return $result;
+            }
 
         }catch (PDOException $e) {
             $this->stmt = null;
@@ -87,31 +90,38 @@ class  KickStartDB
         return $pass;
     }
 
-    public function registerUser($user,$pass,$authLvl){
+    public function registerUser($user,$pass,$authLvl,$fName,$lName,$gen){
 
         try {
-
+            $result['status'] = "Forbidden";
             $query = "SELECT UserName FROM Users WHERE UserName=:userName";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':userName', $user);
             $this->stmt->execute();
 
-            if($this->stmt->rowCount() > 0)
-                return "UserName Already Exist";
+            if($this->stmt->rowCount() > 0) {
+                $result['reason'] = "UserName Already Exist";
+                return $result;
+            }
             else {
 
                 $c_pass = $this->calculatePassword($pass);
-                $query = "INSERT INTO Users (UserName, Password, UserAuthLvl) VALUES ( :userName, :c_pass, :authLvl )";
+                $query = "INSERT INTO Users (UserName, Password, UserAuthLvl, FirstName, LastName, Gender) VALUES ( :userName, :c_pass, :authLvl, :fname, :lname, :gen )";
                 $this->stmt = $this->db->prepare($query);
                 $this->stmt->bindParam(':userName', $user);
                 $this->stmt->bindParam(':c_pass', $c_pass);
                 $this->stmt->bindParam(':authLvl', $authLvl);
-                if($this->stmt->execute()) {
-
+                $this->stmt->bindParam(':fname', $fName);
+                $this->stmt->bindParam(':lname', $lName);
+                $this->stmt->bindParam(':gen', $gen);
+                $this->stmt->execute();
+                if($this->stmt->rowCount() > 0) {
                     return "User Added Successfully";
                 }
-                else
-                    return "Error Adding User";
+                else {
+                    $result['status'] = "Error";
+                    $result['reason'] = "Error Adding User";
+                    }
             }
 
         }catch (PDOException $e) {

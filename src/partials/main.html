@@ -25,13 +25,13 @@
 </div>
 
 <div class="row" id="features">
-    <div class="col-sm-4 feature" ng-repeat="project in templateProjects | filter:main.searchText">
+    <div class="col-sm-4 feature" ng-repeat="project in topProjects | filter:main.searchText">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title">{{project.name}}</h4>
             </div>
             <div class="panel-body">
-                <img src="{{project.thumb}}" alt="{{project.name}}" class="img-circle">
+                <img ng-src="{{project.thumb}}" alt="{{project.name}}" class="img-circle">
 
                 <p>{{project.description}}</p>
 
@@ -40,7 +40,3 @@
         </div>
     </div>
 </div>
-
-
-
-<button ng-click=""

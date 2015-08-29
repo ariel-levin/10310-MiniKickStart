@@ -1,11 +1,12 @@
 var kickstartApp = angular.module('kickstartApp', [
     'ngRoute',
     'kickstartControllers',
-    'kickstartServices'
+    'kickstartServices',
+    'ngStorage'
 ]);
 
-kickstartApp.config(['$routeProvider',
-    function ($routeProvider) {
+kickstartApp.config(['$routeProvider', '$httpProvider',
+    function ($routeProvider, $httpProvider) {
         $routeProvider.
             when('/main', {
                 templateUrl: 'partials/main.html',
@@ -14,6 +15,8 @@ kickstartApp.config(['$routeProvider',
             otherwise({
                 redirectTo: '/main'
             });
+
+        $httpProvider.defaults.withCredentials = true;
     }
 ]);
 
@@ -22,89 +25,83 @@ kickstartApp.controller('AppCtrl', function ($scope, $log, ApiService) {
         $scope.main = {};
         $scope.main.signedIn = false;
 
-        $scope.login = {};
-        $scope.register = {};
+
+        $scope.resetFormFields = function () {
+            $scope.login = {};
+            $scope.register = {};
+        };
+
+        $scope.resetFormFields();
+
 
         ApiService.getTopProjects()
             .then(function getTopProjectsSuccess(res) {
                 $log.debug("AppCtrl: getTopProjects success: " + res);
-                $scope.templateProjects = res;
+                $scope.topProjects = res;
             }, function getTopProjectsError(reason) {
                 $log.error("AppCtrl: getTopProjects failed. reason: ", reason);
             });
 
-        $scope.login = function (valid) {
+
+        $scope.loginRequest = function (valid) {
             if (valid) {
-                $scope.main.signedIn = true;
-
-                alert("login success\n"
-                    + "\nemail: " + $scope.login.email
-                    + "\npass: " + $scope.login.pass);
-
-                $('#loginModal').modal('toggle');
+                $scope.userLogin(false);
             } else {
                 alert("some login form fields are incorrect");
             }
         };
 
-        $scope.logout = function () {
-            $scope.main.signedIn = false;
-            alert("logged out success");
-        };
-
-        $scope.register = function (valid) {
+        $scope.registerRequest = function (valid) {
             if (valid) {
-                alert("register success\n"
-                    + "\nname: " + $scope.register.firstName + " " + $scope.register.lastName
-                    + "\nemail: " + $scope.register.email
-                    + "\npass: " + $scope.register.pass);
-
-                $('#registerModal').modal('toggle');
+                $scope.userRegister();
             } else {
                 alert("some register form fields are incorrect");
             }
         };
 
+        $scope.logoutRequest = function () {
+            $scope.main.signedIn = false;
+            alert("logged out success");
+            $scope.resetFormFields();
+        };
 
 
-        //$scope.templateProjects = [
-        //    {
-        //        "name": "Project 1",
-        //        "thumb": "project1.png",
-        //        "description": "Rooms oh fully taken by worse do. Points afraid but may end law lasted. Was out laughter raptures returned outweigh. Luckily cheered colonel me do we attacks on highest enabled. Tried law yet style child.",
-        //        "link": "#main"
-        //    },
-        //    {
-        //        "name": "Project 2",
-        //        "thumb": "project2.jpg",
-        //        "description": "Delighted consisted newspaper of unfeeling as neglected so. Tell size come hard mrs and four fond are. Of in commanded earnestly resources it. At quitting in strictly up wandered of relation answered felicity.",
-        //        "link": "#main"
-        //    },
-        //    {
-        //        "name": "Project 3",
-        //        "thumb": "project3.png",
-        //        "description": "Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir yourself provided you required his. So neither related he am do believe. Nothing but you hundred had use regular.",
-        //        "link": "#main"
-        //    },
-        //    {
-        //        "name": "Project 4",
-        //        "thumb": "project4.png",
-        //        "description": "Scarcely on striking packages by so property in delicate. Up or well must less rent read walk so be. Easy sold at do hour sing spot. Any meant has cease too the decay. Since party burst am it match.",
-        //        "link": "#main"
-        //    },
-        //    {
-        //        "name": "Project 5",
-        //        "thumb": "project5.png",
-        //        "description": "Stronger unpacked felicity to of mistaken. Fanny at wrong table ye in. Be on easily cannot innate in lasted months on. Differed and and felicity steepest mrs age outweigh. Opinions learning likewise daughter now age outweigh.",
-        //        "link": "#main"
-        //    },
-        //    {
-        //        "name": "Project 6",
-        //        "thumb": "project6.jpg",
-        //        "description": "Situation admitting promotion at or to perceived be. Mr acuteness we as estimable enjoyment up. An held late as felt know. Learn do allow solid to grave. Middleton suspicion age her attention. Chiefly several bed its wishing.",
-        //        "link": "#main"
-        //    }
-        //];
+        $scope.userLogin = function(isRegistered) {
+            ApiService.userLogin($scope.login)
+                .then(function userLoginSuccess(res) {
+                    $log.debug("AppCtrl: userLogin success: " + res);
+
+                    $scope.main.signedIn = true;
+
+                    alert("Login Success!\n"
+                        + "\nUserName: " + res.UserName
+                        + "\nUserAuthLvl: " + res.UserAuthLvl);
+
+                    if (!isRegistered) {
+                        $('#loginModal').modal('toggle');
+                    }
+                    $scope.resetFormFields();
+
+                }, function userLoginError(reason) {
+                    $log.error("AppCtrl: userLogin failed. reason: ", reason);
+                });
+        };
+
+        $scope.userRegister = function() {
+            ApiService.userRegister($scope.register)
+                .then(function userRegisterSuccess(res) {
+                    $log.debug("AppCtrl: userRegister success: " + res);
+                    alert(res);
+                    $scope.login.email = $scope.register.email;
+                    $scope.login.pass = $scope.register.pass;
+                    $scope.userLogin(true);
+                    $('#registerModal').modal('toggle');
+                    $scope.resetFormFields();
+
+                }, function userRegisterError(reason) {
+                    $log.error("AppCtrl: userRegister failed. reason: ", reason);
+                });
+        };
 
     }
 );

@@ -26,9 +26,15 @@ switch($type){
         break;
     case "login":
         $result = $kickStartDB->checkUserPassword($_POST['userName'],$_POST['pass']);
+        if(isset($result['status']) && $result['status'] == "Unauthorized")
+            http_response_code(401);
         break;
     case "registerUser":
-        $result = $kickStartDB->registerUser($_POST['userName'],$_POST['pass'],$_POST['authLvl']);
+        $result = $kickStartDB->registerUser($_POST['userName'],$_POST['pass'],$_POST['authLvl'],$_POST['fname'],$_POST['lname'],$_POST['gen']);
+        if(isset($result['status']) && $result['status'] == "Forbidden")
+            http_response_header(403);
+        if(isset($result['status']) && $result['status'] == "Error")
+            http_response_header(400);
         break;
     case "addProject":
         $result = $kickStartDB->addProject($_POST['name'],$_POST['description'],$_POST['amount'],$_POST['owner']);
