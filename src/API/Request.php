@@ -45,7 +45,7 @@ switch($type){
                     $result['error'] = "failed to upload file";
                 }
                 else
-                    $kickStartDB->updateMainPic($result,'/projects/'.$result.'/'.$temp);
+                    $kickStartDB->updateMainPic($result,'projects/'.$result.'/'.$temp);
             }
         }
         break;
