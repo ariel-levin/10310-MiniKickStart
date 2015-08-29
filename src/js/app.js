@@ -17,14 +17,21 @@ kickstartApp.config(['$routeProvider',
     }
 ]);
 
-kickstartApp.controller('AppCtrl', ['$scope', 'User',
-    function ($scope, User) {
+kickstartApp.controller('AppCtrl', function ($scope, $log, ApiService) {
 
         $scope.main = {};
         $scope.main.signedIn = false;
 
         $scope.login = {};
         $scope.register = {};
+
+        ApiService.getTopProjects()
+            .then(function getTopProjectsSuccess(res) {
+                $log.debug("AppCtrl: getTopProjects success: " + res);
+                $scope.templateProjects = res;
+            }, function getTopProjectsError(reason) {
+                $log.error("AppCtrl: getTopProjects failed. reason: ", reason);
+            });
 
         $scope.login = function (valid) {
             if (valid) {
@@ -58,47 +65,46 @@ kickstartApp.controller('AppCtrl', ['$scope', 'User',
             }
         };
 
-;
 
 
-        $scope.templateProjects = [
-            {
-                "name": "Project 1",
-                "thumb": "project1.png",
-                "desc": "Rooms oh fully taken by worse do. Points afraid but may end law lasted. Was out laughter raptures returned outweigh. Luckily cheered colonel me do we attacks on highest enabled. Tried law yet style child.",
-                "link": "#main"
-            },
-            {
-                "name": "Project 2",
-                "thumb": "project2.jpg",
-                "desc": "Delighted consisted newspaper of unfeeling as neglected so. Tell size come hard mrs and four fond are. Of in commanded earnestly resources it. At quitting in strictly up wandered of relation answered felicity.",
-                "link": "#main"
-            },
-            {
-                "name": "Project 3",
-                "thumb": "project3.png",
-                "desc": "Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir yourself provided you required his. So neither related he am do believe. Nothing but you hundred had use regular.",
-                "link": "#main"
-            },
-            {
-                "name": "Project 4",
-                "thumb": "project4.png",
-                "desc": "Scarcely on striking packages by so property in delicate. Up or well must less rent read walk so be. Easy sold at do hour sing spot. Any meant has cease too the decay. Since party burst am it match.",
-                "link": "#main"
-            },
-            {
-                "name": "Project 5",
-                "thumb": "project5.png",
-                "desc": "Stronger unpacked felicity to of mistaken. Fanny at wrong table ye in. Be on easily cannot innate in lasted months on. Differed and and felicity steepest mrs age outweigh. Opinions learning likewise daughter now age outweigh.",
-                "link": "#main"
-            },
-            {
-                "name": "Project 6",
-                "thumb": "project6.jpg",
-                "desc": "Situation admitting promotion at or to perceived be. Mr acuteness we as estimable enjoyment up. An held late as felt know. Learn do allow solid to grave. Middleton suspicion age her attention. Chiefly several bed its wishing.",
-                "link": "#main"
-            }
-        ];
+        //$scope.templateProjects = [
+        //    {
+        //        "name": "Project 1",
+        //        "thumb": "project1.png",
+        //        "description": "Rooms oh fully taken by worse do. Points afraid but may end law lasted. Was out laughter raptures returned outweigh. Luckily cheered colonel me do we attacks on highest enabled. Tried law yet style child.",
+        //        "link": "#main"
+        //    },
+        //    {
+        //        "name": "Project 2",
+        //        "thumb": "project2.jpg",
+        //        "description": "Delighted consisted newspaper of unfeeling as neglected so. Tell size come hard mrs and four fond are. Of in commanded earnestly resources it. At quitting in strictly up wandered of relation answered felicity.",
+        //        "link": "#main"
+        //    },
+        //    {
+        //        "name": "Project 3",
+        //        "thumb": "project3.png",
+        //        "description": "Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir yourself provided you required his. So neither related he am do believe. Nothing but you hundred had use regular.",
+        //        "link": "#main"
+        //    },
+        //    {
+        //        "name": "Project 4",
+        //        "thumb": "project4.png",
+        //        "description": "Scarcely on striking packages by so property in delicate. Up or well must less rent read walk so be. Easy sold at do hour sing spot. Any meant has cease too the decay. Since party burst am it match.",
+        //        "link": "#main"
+        //    },
+        //    {
+        //        "name": "Project 5",
+        //        "thumb": "project5.png",
+        //        "description": "Stronger unpacked felicity to of mistaken. Fanny at wrong table ye in. Be on easily cannot innate in lasted months on. Differed and and felicity steepest mrs age outweigh. Opinions learning likewise daughter now age outweigh.",
+        //        "link": "#main"
+        //    },
+        //    {
+        //        "name": "Project 6",
+        //        "thumb": "project6.jpg",
+        //        "description": "Situation admitting promotion at or to perceived be. Mr acuteness we as estimable enjoyment up. An held late as felt know. Learn do allow solid to grave. Middleton suspicion age her attention. Chiefly several bed its wishing.",
+        //        "link": "#main"
+        //    }
+        //];
 
     }
-]);
+);
