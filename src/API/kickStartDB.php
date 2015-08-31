@@ -203,7 +203,7 @@ class  KickStartDB
                       ORDER BY CreatedAt Asc
                       LIMIT 6";
             $this->stmt = $this->db->query($query);
-
+            $this->stmt->execute();
             $result = $this->stmt->fetchAll();
             return $result;
 
@@ -212,6 +212,33 @@ class  KickStartDB
             return $e->getMessage();
 
         }
+
+    }
+
+    public function getUserProjects($userName){
+
+        try {
+            $query = "SELECT * FROM projects WHERE Owner=:userName";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':userName', $userName);
+            $this->stmt->execute();
+
+            if($this->stmt->rowCount() > 0) {
+                $result = $this->stmt->fetchAll();
+                return $result;
+            }
+            else
+                return "Error";
+
+
+        }catch (PDOException $e){
+            $this->stmt = null;
+            return $e->getMessage();
+
+    }
+
+
+
 
     }
 

@@ -27,6 +27,7 @@ kickstartApp.controller('AppCtrl', function ($scope, $log, ApiService) {
         $scope.main.authLvl = -1;
 
 
+
         $scope.resetFormFields = function () {
             $scope.login = {};
             $scope.register = {};
