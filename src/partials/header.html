@@ -30,20 +30,59 @@
                 <li><a href="#registerModal" role="button" data-toggle="modal" ng-if="!main.signedIn">Register</a></li>
                 <li><a href="#loginModal" role="button" data-toggle="modal" ng-if="!main.signedIn">Login</a></li>
 
-                <!-- if signed in -->
-                <li class="dropdown" ng-if="main.signedIn">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">
-                        My Account <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a ng-click="">Option 1</a></li>
-                        <li><a ng-click="">Option 2</a></li>
-                        <li><a ng-click="">Option 3</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a ng-click="logoutRequest()">Logout</a></li>
-                    </ul>
-                </li>
+                <!-- if signed in and auth lvl 0-->
+                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 0">
+                    <li class="label">Welcome Admin</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            My Account <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="">Users Control</a></li>
+                            <li><a ng-click="">My Info</a></li>
+                            <li><a ng-click="">Option 3</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="logoutRequest()">Logout</a></li>
+                        </ul>
+                    </li>
+                </div>
+
+                <!-- if signed in and auth lvl 1-->
+                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 1">
+                    <li class="label">Welcome Project Manager</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            My Account <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="">Watch My Projects</a></li>
+                            <li><a ng-click="">Add New Project</a></li>
+                            <li><a ng-click="">My Info</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="logoutRequest()">Logout</a></li>
+                        </ul>
+                    </li>
+                </div>
+
+                <!-- if signed in and auth lvl 2-->
+                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 2">
+                    <li class="label">Welcome Investor</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            My Account <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a ng-click="">Watch My Investments</a></li>
+                            <li><a ng-click="">My Info</a></li>
+                            <li><a ng-click="">Option 3</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="logoutRequest()">Logout</a></li>
+                        </ul>
+                    </li>
+                </div>
 
             </ul>
         </div>

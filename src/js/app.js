@@ -24,6 +24,7 @@ kickstartApp.controller('AppCtrl', function ($scope, $log, ApiService) {
 
         $scope.main = {};
         $scope.main.signedIn = false;
+        $scope.main.authLvl = -1;
 
 
         $scope.resetFormFields = function () {
@@ -72,7 +73,7 @@ kickstartApp.controller('AppCtrl', function ($scope, $log, ApiService) {
                     $log.debug("AppCtrl: userLogin success: " + res);
 
                     $scope.main.signedIn = true;
-
+                    $scope.main.authLvl = res.UserAuthLvl;
                     alert("Login Success!\n"
                         + "\nUserName: " + res.UserName
                         + "\nUserAuthLvl: " + res.UserAuthLvl);

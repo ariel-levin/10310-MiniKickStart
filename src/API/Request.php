@@ -38,8 +38,10 @@ switch($type){
         break;
     case "addProject":
         $result = $kickStartDB->addProject($_POST['name'],$_POST['description'],$_POST['amount'],$_POST['owner']);
-        if($result == "Error")
+        if($result == "Error") {
+            http_response_header(400);
             break;
+        }
         else{
             $kickStartDB->makeDir($projectsPath.$result);
             if(!isset($_FILES['mainPic']) || $_FILES['mainPic']['error'] == UPLOAD_ERR_NO_FILE)
