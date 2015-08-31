@@ -1,7 +1,19 @@
+@import url(https://fonts.googleapis.com/css?family=Russo+One|Didact+Gothic);
+
+
+/********************************
+*   General
+*
+********************************/
+
 body {
     color: #114E79;
     background-color: #73b4c8;
     margin-top: 70px;
+}
+
+.div-center {
+    text-align: center;
 }
 
 
@@ -103,7 +115,7 @@ body {
 *
 ********************************/
 
-#mainWell {
+.kickStartWell {
     margin: 50px 0 50px 0;
     background-color: rgba(198, 208, 239, 0.64);
     border-radius: 10px 10px 10px 10px;
@@ -115,15 +127,15 @@ body {
     box-shadow: 15px 15px 25px -6px rgba(0,0,0,0.75);
 }
 
-#mainWell small {
+.kickStartWell small {
     color: #2c8d7e;
 }
 
-#mainWell .btn-link {
+.kickStartWell .btn-link {
     color: #2c8d7e;
 }
 
-#mainWell .page-header {
+.kickStartWell .page-header {
     margin-top: -15px;
     border-bottom: 2px solid #212d3a;
 }
@@ -155,4 +167,45 @@ body {
 
 .feature {
     margin-bottom: 20px;
+}
+
+
+/********************************
+*   Project
+*
+********************************/
+
+.project-header {
+    font-family: 'Russo One', sans-serif;
+    text-align: center;
+    color: #395847;
+}
+
+.project .lead {
+    margin-bottom: 0;
+}
+
+.project-img-div {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.project-img {
+    max-width: 250px;
+    max-height: 250px;
+}
+
+.blueimp-gallery-img {
+    max-width: 150px;
+    max-height: 150px;
+    margin: 30px 0 30px 0;
+}
+
+.blueimp-gallery .glyphicon {
+    font-size: 35px;
+}
+
+#projectWell {
+    background-color: rgba(198, 239, 214, 0.64);
+    font-family: 'Didact Gothic', sans-serif;
 }

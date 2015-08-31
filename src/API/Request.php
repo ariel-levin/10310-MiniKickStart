@@ -9,17 +9,17 @@
 require 'kickStartDB.php';
 
 
-$config = include(__DIR__ .'/config.php');
-$projectsPath = __DIR__.'/../projects/';
+$config = include(__DIR__ . '/config.php');
+$projectsPath = __DIR__ . '/../projects/';
 
 //create a new object for db connection
-$kickStartDB = new KickStartDB($config['host'],$config['username'],$config['password'],$config['dbname']);
+$kickStartDB = new KickStartDB($config['host'], $config['username'], $config['password'], $config['dbname']);
 
 
 header('Content-Type: application/json');
 $type = $_POST['request'];
 $result['status'] = "ERROR";
-switch($type) {
+switch ($type) {
 
     case "test":
         $result = $kickStartDB->test();
@@ -91,6 +91,7 @@ switch($type) {
         }
 
         break;
+
     case "topProjects":
         $result = $kickStartDB->getTopProjects();
         break;
@@ -103,13 +104,33 @@ switch($type) {
         }
         break;
 
+    case "userBackings":
+        $result = $kickStartDB->getUserBackings($_POST['userName']);
+        if ($result == "Error") {
+            $result = "user has no backing";
+            http_response_code(400);
+        }
+        break;
+
+    case "getProject":
+        $result = $kickStartDB->getProjectById($_POST['pid']);
+        if ($result == "Error") {
+            $result = "project was not found";
+            http_response_code(400);
+        }
+        break;
+
+    case "backProject":
+        $result = $kickStartDB->backProject($_POST['pid'], $_POST['userName'], $_POST['amount']);
+        if ($result == "Error") {
+            $result = "couldn't add money";
+            http_response_code(400);
+        }
+        break;
 
 }
 
 echo json_encode($result);
-
-
-
 
 
 ?>

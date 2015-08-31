@@ -1,0 +1,68 @@
+<div class="container project">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="project-header">{{project.Name}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7 project-img-div">
+            <img class="project-img" ng-src="{{project.MainPic}}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="well kickStartWell" id="projectWell">
+                <p class="lead">{{project.Description}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 div-center">
+            <h2><b>Project Gallery</b></h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="div-center" id="projectImages">
+            <div class="col-sm-3">
+                <a href="projects/default_image.png" title="Banana">
+                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a href="projects/default_image.png" title="Banana">
+                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a href="projects/default_image.png" title="Banana">
+                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a href="projects/default_image.png" title="Banana">
+                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a href="projects/default_image.png" title="Banana">
+                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- gallery controller -->
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev"><span class="glyphicon glyphicon-chevron-left"/></a>
+    <a class="next"><span class="glyphicon glyphicon-chevron-right"/></a>
+    <a class="close"><span class="glyphicon glyphicon-remove"/></a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>

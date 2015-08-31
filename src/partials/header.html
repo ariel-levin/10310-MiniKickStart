@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" ng-click=""><img src="img/logo.png" id="logo-img"/></a>
+            <a class="navbar-brand" href="#/"><img src="img/logo.png" id="logo-img"/></a>
         </div>
 
         <div class="collapse navbar-collapse component" id="navbar-responsive-collapse">
@@ -27,11 +27,11 @@
             <ul class="nav navbar-nav navbar-right">
 
                 <!-- if not signed in -->
-                <li><a href="#registerModal" role="button" data-toggle="modal" ng-if="!main.signedIn">Register</a></li>
-                <li><a href="#loginModal" role="button" data-toggle="modal" ng-if="!main.signedIn">Login</a></li>
+                <li><a ng-click="toggleModal('#registerModal')" role="button" data-toggle="modal" ng-if="!main.user.signed">Register</a></li>
+                <li><a ng-click="toggleModal('#loginModal')" role="button" data-toggle="modal" ng-if="!main.user.signed">Login</a></li>
 
                 <!-- if signed in and auth lvl 0-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 0">
+                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 0">
                     <li class="label">Welcome Admin</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -49,7 +49,7 @@
                 </div>
 
                 <!-- if signed in and auth lvl 1-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 1">
+                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 1">
                     <li class="label">Welcome Project Manager</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -67,7 +67,7 @@
                 </div>
 
                 <!-- if signed in and auth lvl 2-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.signedIn && main.authLvl == 2">
+                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 2">
                     <li class="label">Welcome Investor</li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"

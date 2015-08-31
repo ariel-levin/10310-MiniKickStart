@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-controller="AppCtrl" ng-app="kickstartApp">
+<html ng-app="kickstartApp" ng-controller="mainCtrl">
 <head>
     <title>Kick Start</title>
 
@@ -7,7 +7,9 @@
 
     <meta charset="utf-8"/>
 
+    <!-- css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/blueimp-gallery/css/blueimp-gallery.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
 
 </head>
@@ -21,13 +23,14 @@
         <div ng-view class="view-frame"></div>
     </div>
 
+
     <!-- scripts -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/angular-resource/angular-resource.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="bower_components/ngstorage/ngStorage.min.js"></script>
+    <script src="bower_components/blueimp-gallery/js/blueimp-gallery.min.js"></script>
 
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
