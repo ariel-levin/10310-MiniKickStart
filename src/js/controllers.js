@@ -96,19 +96,57 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService) 
 );
 
 
-kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiService, $routeParams) {
+kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiService, $routeParams, $sce) {
 
         $scope.project = {};
         $scope.project.id = $routeParams.projectId;
+        $scope.backersVisible = false;
 
         ApiService.getProject($scope.project.id)
             .then(function getTopProjectsSuccess(res) {
                 $log.debug("projectCtrl: getProject success: " + res);
                 $scope.project = res;
 
+                $scope.project.amountCollected = 0;
+                $scope.project.backers.forEach(function(entry) {
+                    $scope.project.amountCollected += entry.Amount;
+                });
+
+                $scope.project.fundPercent = ($scope.project.amountCollected / $scope.project.AmountNeeded) * 100;
+
             }, function getTopProjectsError(reason) {
                 $log.error("projectCtrl: getProject failed. reason: ", reason);
             });
+
+
+        angular.element(document).ready(function () {
+
+            var days, hours, minutes, seconds;
+            var countdown = document.getElementById('timerSpan');
+            var interval = 0;
+
+            setInterval(function () {
+
+                var seconds_left = ($scope.project.timeLeft.milliSec / 1000) - interval;
+
+                days = parseInt(seconds_left / 86400);
+                seconds_left = seconds_left % 86400;
+
+                hours = parseInt(seconds_left / 3600);
+                seconds_left = seconds_left % 3600;
+
+                minutes = parseInt(seconds_left / 60);
+                seconds = parseInt(seconds_left % 60);
+
+                countdown.innerHTML = '<span class="days">' + days +  ' <b>Days,</b></span> <span class="hours">' +
+                    hours + ' <b>Hours,</b></span> <span class="minutes">' + minutes +
+                    ' <b>Minutes</b></span> <span class="seconds">' + seconds + ' <b>Seconds</b></span>';
+
+                interval++;
+
+            }, 1000);
+        });
+
 
         // controller for the project image gallery
         document.getElementById('projectImages').onclick = function (event) {
@@ -118,6 +156,23 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
                 options = {index: link, event: event},
                 links = this.getElementsByTagName('a');
             blueimp.Gallery(links, options);
+        };
+
+        $scope.getTrustedSrc = function(src) {
+            return $sce.trustAsResourceUrl(src);
+        };
+
+        $scope.getYouTubeEmbedURL = function() {
+            if ($scope.project.VideoYouTubeID && $scope.project.VideoYouTubeID !== "") {
+                var url = "https://www.youtube.com/embed/" + $scope.project.VideoYouTubeID;
+                return $scope.getTrustedSrc(url);
+            } else {
+                return null;
+            }
+        };
+
+        $scope.showBackers = function() {
+            $scope.backersVisible = ($scope.backersVisible) ? false : true;
         };
 
     }

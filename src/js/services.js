@@ -1,5 +1,11 @@
 var kickstartServices = angular.module('kickstartServices', ['ngResource']);
 
+kickstartServices.factory('User', function () {
+
+
+});
+
+
 kickstartServices.factory('ApiService', function ($http, $log, $q) {
 
     function getTopProjects() {

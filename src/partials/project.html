@@ -4,16 +4,48 @@
             <h1 class="project-header">{{project.Name}}</h1>
         </div>
     </div>
+
+    <div class="row sub-title">
+        <div class="col-12 div-center">
+            <h4>
+                <b>Amount needed: </b>{{project.AmountNeeded}}
+                &nbsp;<span class="glyphicon glyphicon-transfer"></span>&nbsp;
+                <b>Amount raised: </b>{{project.amountCollected}}
+            </h4>
+            <div class="col-center progress-bar-div">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{project.fundPercent}}"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         ng-style="{ 'width': project.fundPercent + '%' }">
+                        {{project.fundPercent}}%
+                    </div>
+                </div>
+            </div>
+            <h4 class="timer-header">
+                <b>Time left: </b>
+                <span id="timerSpan">Loading...</span>
+            </h4>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-7 project-img-div">
             <img class="project-img" ng-src="{{project.MainPic}}"/>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <div class="well kickStartWell" id="projectWell">
                 <p class="lead">{{project.Description}}</p>
             </div>
+        </div>
+    </div>
+
+    <div class="row" ng-show="project.VideoYouTubeID">
+        <div class="col-12 div-center">
+            <iframe class="project-video" width="560" height="315" ng-src="{{getYouTubeEmbedURL()}}" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -23,33 +55,32 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row project-img-row">
         <div class="div-center" id="projectImages">
-            <div class="col-sm-3">
-                <a href="projects/default_image.png" title="Banana">
-                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
+            <div class="col-sm-3" ng-repeat="pic in project.pics">
+                <a href="{{pic.path}}">
+                    <img class="blueimp-gallery-img" ng-src="{{pic.path}}"/>
                 </a>
             </div>
-            <div class="col-sm-3">
-                <a href="projects/default_image.png" title="Banana">
-                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="projects/default_image.png" title="Banana">
-                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="projects/default_image.png" title="Banana">
-                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
-                </a>
-            </div>
-            <div class="col-sm-3">
-                <a href="projects/default_image.png" title="Banana">
-                    <img class="blueimp-gallery-img" ng-src="projects/default_image.png" alt="Banana">
-                </a>
-            </div>
+        </div>
+    </div>
+
+    <div class="row div-center bottom-buttons">
+        <div class="col-sm-2 col-center">
+            <button class="btn btn-success" ng-click="showBackers()">Show Backers</button>
+        </div>
+        <div class="col-sm-2 col-center">
+            <button class="btn btn-danger" ng-click="">Back Project</button>
+        </div>
+    </div>
+
+    <div class="row div-center" ng-class="{'hiddenClass': !backersVisible}">
+        <div class="col-sm-5 col-center project-backers">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="backer in project.backers">
+                    <b>User:</b> {{backer.UserName}}, <b>Amount:</b> {{backer.Amount}}
+                </li>
+            </ul>
         </div>
     </div>
 
