@@ -286,6 +286,11 @@ class  KickStartDB
                 $this->stmt->bindParam(':pid', $pid);
                 $this->stmt->execute();
                 $result['backers'] = $this->stmt->fetchAll();
+                $query = "SELECT ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec FROM projects WHERE ID=:pid";
+                $this->stmt = $this->db->prepare($query);
+                $this->stmt->bindParam(':pid', $pid);
+                $this->stmt->execute();
+                $result['timeLeft'] = $this->stmt->fetch();
                 return $result;
             } else
                 return "Error";

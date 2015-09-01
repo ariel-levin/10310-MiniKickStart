@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Russo+One|Didact+Gothic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:700|Didact+Gothic);
 
 
 /********************************
@@ -14,6 +14,15 @@ body {
 
 .div-center {
     text-align: center;
+}
+
+.col-center {
+    display:inline-block;
+    float:none;
+}
+
+.hiddenClass {
+    visibility: hidden;
 }
 
 
@@ -55,10 +64,6 @@ body {
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:focus, .navbar-inverse .navbar-nav > .open > a:hover {
     color: #2c8d7e;
     background-color: #133b62;
-}
-
-.glyphicon {
-    color: #7ca0db;
 }
 
 .navbar-inverse .navbar-toggle {
@@ -176,9 +181,10 @@ body {
 ********************************/
 
 .project-header {
-    font-family: 'Russo One', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     text-align: center;
-    color: #395847;
+    font-size: 50px;
+    color: #2C3E50;
 }
 
 .project .lead {
@@ -195,6 +201,25 @@ body {
     max-height: 250px;
 }
 
+.project-video {
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 3px solid #212d3a;
+    -webkit-box-shadow: 15px 15px 25px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 15px 15px 25px -6px rgba(0,0,0,0.75);
+    box-shadow: 15px 15px 25px -6px rgba(0,0,0,0.75);
+    margin: 30px 0 60px 0;
+}
+
+.project .sub-title {
+    margin-top: 20px;
+}
+
+.progress-bar-div {
+    width: 470px;
+}
+
 .blueimp-gallery-img {
     max-width: 150px;
     max-height: 150px;
@@ -203,6 +228,28 @@ body {
 
 .blueimp-gallery .glyphicon {
     font-size: 35px;
+}
+
+.project-img-row {
+    margin-bottom: 50px;
+}
+
+.project-backers {
+    text-align: left;
+    margin-bottom: 50px;
+}
+
+.project-backers .list-group-item {
+    background-color: rgba(198, 239, 214, 0.64);
+    border: 1px solid #212D3A;
+}
+
+.project .bottom-buttons {
+    margin: 80px 0 30px 0;
+}
+
+.timer-header {
+    margin-top: -10px;
 }
 
 #projectWell {
