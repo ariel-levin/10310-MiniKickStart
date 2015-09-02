@@ -37,7 +37,7 @@ switch ($type) {
             http_response_code(400);
         break;
     case "addProject":
-        $result = $kickStartDB->addProject($_POST['name'], $_POST['description'], $_POST['amount'], $_POST['owner']);
+        $result = $kickStartDB->addProject($_POST['name'], $_POST['description'], $_POST['amount'], $_POST['endDate'], $_POST['videoUrl'], $_POST['owner']);
         if ($result == "Error") {
             http_response_code(400);
             break;
@@ -92,8 +92,8 @@ switch ($type) {
 
         break;
 
-    case "topProjects":
-        $result = $kickStartDB->getTopProjects();
+    case "projectList":
+        $result = $kickStartDB->getProjectList();
         break;
 
     case "userProjects":

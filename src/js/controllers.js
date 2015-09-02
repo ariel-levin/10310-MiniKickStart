@@ -1,29 +1,41 @@
 var kickstartControllers = angular.module('kickstartControllers', []);
 
-kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService) {
+kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, $route) {
+
+        var DEBUG = true;
 
         $scope.main = {};
 
-        $scope.main.user = {};
-        $scope.main.user.signed = false;
-        $scope.main.user.authLvl = -1;
+        $scope.main.searchText = "";
+        $scope.user = {};
 
 
         $scope.resetFormFields = function () {
             $scope.login = {};
             $scope.register = {};
+            $scope.newProject = {};
+            $scope.newProject.endDateField = new Date();
         };
 
         $scope.resetFormFields();
 
 
-        ApiService.getTopProjects()
-            .then(function getTopProjectsSuccess(res) {
-                $log.debug("mainCtrl: getTopProjects success: " + res);
-                $scope.topProjects = res;
-            }, function getTopProjectsError(reason) {
-                $log.error("mainCtrl: getTopProjects failed. reason: ", reason);
-            });
+        $scope.loadProjectList = function() {
+            ApiService.getProjectList()
+                .then(function getProjectListSuccess(res) {
+                    $log.debug("mainCtrl: getProjectList success: " + res);
+                    $scope.projectList = res;
+
+                    $scope.projectList.forEach(function (p) {
+                        $scope.getProjectTimeData(p);
+                    });
+
+                }, function getProjectListError(reason) {
+                    $log.error("mainCtrl: getProjectList failed. reason: ", reason);
+                });
+        };
+
+        $scope.loadProjectList();
 
 
         $scope.loginRequest = function (valid) {
@@ -42,8 +54,16 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService) 
             }
         };
 
+        $scope.newProjectRequest = function (valid) {
+            if (valid) {
+                $scope.createNewProject();
+            } else {
+                alert("some new project form fields are incorrect");
+            }
+        };
+
         $scope.logoutRequest = function () {
-            $scope.main.user = {};
+            $scope.user = {};
             alert("logged out success");
             $scope.resetFormFields();
         };
@@ -59,9 +79,15 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService) 
                 .then(function userLoginSuccess(res) {
                     $log.debug("mainCtrl: userLogin success: " + res);
 
-                    $scope.main.user.signed = true;
-                    $scope.main.user.id = res.UserName;
-                    $scope.main.user.authLvl = res.UserAuthLvl;
+                    $scope.user = res;
+                    $scope.user.signed = true;
+
+                    if ($scope.user.UserAuthLvl == 1) {
+                        $scope.getUserProjects();
+                        $scope.getUserInvestments();
+                    } else if ($scope.user.UserAuthLvl == 2) {
+                        $scope.getUserInvestments();
+                    }
 
                     //alert("Login Success!\n"
                     //    + "\nUserName: " + res.UserName
@@ -92,6 +118,81 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService) 
                     $log.error("mainCtrl: userRegister failed. reason: ", reason);
                 });
         };
+
+        $scope.createNewProject = function() {
+            $scope.newProject.owner = $scope.user.UserName;
+            $scope.newProject.endDate = $scope.newProject.endDateField.toISOString();
+            ApiService.createNewProject($scope.newProject)
+                .then(function createNewProjectSuccess(res) {
+                    $log.debug("mainCtrl: createNewProject success: " + res);
+                    alert("Created new project successfully");
+                    $('#newProjectModal').modal('toggle');
+                    $scope.resetFormFields();
+                    $scope.refreshProjects();
+
+                }, function createNewProjectError(reason) {
+                    $log.error("mainCtrl: createNewProject failed. reason: ", reason);
+                });
+        };
+
+        $scope.getUserProjects = function () {
+            ApiService.getUserProjects($scope.user.UserName)
+                .then(function getUserProjectsSuccess(res) {
+                    $log.debug("mainCtrl: getUserProjects success: " + res);
+                    $scope.user.projects = res;
+
+                    $scope.user.projects.forEach(function(p) {
+                        $scope.getProjectTimeData(p);
+                    });
+
+                }, function getUserProjectsError(reason) {
+                    $log.error("mainCtrl: getUserProjects failed. reason: ", reason);
+                });
+        };
+
+        $scope.getUserInvestments = function () {
+            ApiService.getUserInvestments($scope.user.UserName)
+                .then(function getUserInvestmentsSuccess(res) {
+                    $log.debug("mainCtrl: getUserInvestments success: " + res);
+                    $scope.user.investments = res;
+
+                    $scope.user.investments.forEach(function(p) {
+                        $scope.getProjectTimeData(p);
+                    });
+
+                }, function getUserInvestmentsError(reason) {
+                    $log.error("mainCtrl: getUserInvestments failed. reason: ", reason);
+                });
+        };
+
+        $scope.getProjectTimeData = function (project) {
+            project.daysLeft = Math.round(parseInt((project.milliSec / 1000) / 86400));
+            project.fundPercent = Math.round((project.moneybacked / project.AmountNeeded) * 100);
+            project.fundPercentWidth = Math.min(project.fundPercent, 100);
+        };
+
+        $scope.refreshProjects = function() {
+            $scope.loadProjectList();
+            if ($scope.user.UserAuthLvl == 1) {
+                $scope.getUserProjects();
+                $scope.getUserInvestments();
+            } else if ($scope.user.UserAuthLvl == 2) {
+                $scope.getUserInvestments();
+            }
+            $route.reload();
+        };
+
+
+
+
+        if (DEBUG) {
+            //$scope.login.email = "a@b.c";
+            $scope.login.email = "a@a.a";
+            //$scope.login.email = "asd@asd.asd";
+            $scope.login.pass = "123123";
+            $scope.userLogin(true);
+        }
+
     }
 );
 
@@ -103,7 +204,7 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
         $scope.backersVisible = false;
 
         ApiService.getProject($scope.project.id)
-            .then(function getTopProjectsSuccess(res) {
+            .then(function getProjectSuccess(res) {
                 $log.debug("projectCtrl: getProject success: " + res);
                 $scope.project = res;
 
@@ -112,9 +213,10 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
                     $scope.project.amountCollected += entry.Amount;
                 });
 
-                $scope.project.fundPercent = ($scope.project.amountCollected / $scope.project.AmountNeeded) * 100;
+                $scope.project.fundPercent = Math.round(($scope.project.amountCollected / $scope.project.AmountNeeded) * 100);
+                $scope.project.fundPercentWidth = Math.min($scope.project.fundPercent, 100);
 
-            }, function getTopProjectsError(reason) {
+            }, function getProjectError(reason) {
                 $log.error("projectCtrl: getProject failed. reason: ", reason);
             });
 

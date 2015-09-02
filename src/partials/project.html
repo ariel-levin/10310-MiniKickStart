@@ -17,14 +17,17 @@
                     <div class="progress-bar" role="progressbar" aria-valuenow="{{project.fundPercent}}"
                          aria-valuemin="0"
                          aria-valuemax="100"
-                         ng-style="{ 'width': project.fundPercent + '%' }">
+                         ng-style="{ 'width': project.fundPercentWidth + '%' }">
                         {{project.fundPercent}}%
                     </div>
                 </div>
             </div>
-            <h4 class="timer-header">
+            <h4 class="timer-header" ng-show="project.Active">
                 <b>Time left: </b>
                 <span id="timerSpan">Loading...</span>
+            </h4>
+            <h4 class="timer-header" ng-show="!project.Active">
+                <b>Ended</b>
             </h4>
         </div>
     </div>
@@ -69,7 +72,7 @@
         <div class="col-sm-2 col-center">
             <button class="btn btn-success" ng-click="showBackers()">Show Backers</button>
         </div>
-        <div class="col-sm-2 col-center">
+        <div class="col-sm-2 col-center" ng-show="project.Active">
             <button class="btn btn-danger" ng-click="">Back Project</button>
         </div>
     </div>

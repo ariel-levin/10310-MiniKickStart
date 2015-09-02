@@ -8,20 +8,58 @@ kickstartServices.factory('User', function () {
 
 kickstartServices.factory('ApiService', function ($http, $log, $q) {
 
-    function getTopProjects() {
+    function getProjectList() {
         var deferred = $q.defer();
         $http({
             method: 'post',
             url: 'API/Request.php',
-            data: "request=topProjects",
+            data: "request=projectList",
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
             .success(function (res) {
-                $log.debug("ApiService: getTopProjects success: " + res);
+                $log.debug("ApiService: getProjectList success: " + res);
                 deferred.resolve(res);
             })
             .error(function (reason) {
-                $log.error("ApiService: getTopProjects failed: ", reason);
+                $log.error("ApiService: getProjectList failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function getUserProjects(userName) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=userProjects&userName=" + userName,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: getUserProjects success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: getUserProjects failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function getUserInvestments(userName) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=userBackings&userName=" + userName,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: getUserInvestments success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: getUserInvestments failed: ", reason);
                 deferred.reject(reason);
             });
         return deferred.promise;
@@ -86,11 +124,39 @@ kickstartServices.factory('ApiService', function ($http, $log, $q) {
         return deferred.promise;
     }
 
+
+    function createNewProject(project) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=addProject&name=" + project.name + "&description=" + project.desc +
+            "&amount=" + project.fund + "&videoUrl=" + project.video + "&endDate=" + project.endDate +
+            "&owner=" + project.owner,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: createNewProject(1) success: " + res);
+                deferred.resolve(res);
+
+                // TODO: add file upload after the first insert succeed
+            })
+            .error(function (reason) {
+                $log.error("ApiService: createNewProject(1) failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+
     return {
-        getTopProjects: getTopProjects,
+        getProjectList: getProjectList,
         userLogin: userLogin,
         userRegister: userRegister,
-        getProject: getProject
+        getProject: getProject,
+        getUserProjects: getUserProjects,
+        getUserInvestments: getUserInvestments,
+        createNewProject: createNewProject
 
     };
 

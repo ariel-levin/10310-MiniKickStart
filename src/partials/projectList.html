@@ -1,0 +1,47 @@
+<div class="container project-list">
+
+    <div class="row">
+        <div class="col-12">
+            <h1 class="project-list-header">My Projects</h1>
+        </div>
+    </div>
+
+    <div class="row features">
+        <div class="col-sm-4 feature" ng-repeat="project in user.projects | filter:main.searchText">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        {{project.name}} -
+                        <span class="project-active" ng-show="project.Active">Active</span>
+                        <span class="project-ended" ng-show="!project.Active">Ended</span>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    <img ng-src="{{project.thumb}}" alt="{{project.name}}" class="img-circle">
+
+                    <p>{{project.description}}</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{project.fundPercent}}"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             ng-style="{ 'width': project.fundPercentWidth + '%' }">
+                            {{project.fundPercent}}%
+                        </div>
+                    </div>
+
+                    <div class="feature-text">
+                        Raised: {{project.moneybacked}}$ / {{project.AmountNeeded}}$
+                    </div>
+
+                    <div class="feature-text" ng-show="project.Active">
+                        End in: {{project.daysLeft}} Days
+                    </div>
+
+                    <a href="#/project/{{project.id}}" class="btn btn-large btn-primary">Watch</a>
+                    <a ng-click="" class="btn btn-large btn-danger" ng-show="project.Active">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

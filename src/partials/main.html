@@ -1,42 +1,63 @@
-<div ng-include src="'partials/carousel.html'"></div>
+<div class="main">
 
-<div class="row">
-    <div class="col-12">
-        <div class="well kickStartWell">
-            <div class="page-header">
-                <h1>kick<b>start</b> <small>Your ideas matter.</small></h1>
-            </div>
+    <div ng-include src="'partials/carousel.html'"></div>
 
-            <p class="lead">
-                We combines the essence of the social enterprise movement with the hacker spirit of high-growth technology startups and gives advice for future entrepreneurs who want to build a big company while creating sustainable value for society at-large. It is coded by Ariel Levin & Yoni Maymon, Software Engineering students from Afeka Academic College of Engineering. Kickstart is free online and world wide.
-            </p>
+    <div class="row">
+        <div class="col-12">
+            <div class="well kickStartWell">
+                <div class="page-header">
+                    <h1>kick<b>start</b> <small>Your ideas matter.</small></h1>
+                </div>
 
-            <a ng-click="" class="btn btn-large btn-primary">Join Now</a>
-            <a ng-click="" class="btn btn-large btn-link">or login an existing account</a>
-        </div>
-    </div>
-</div>
+                <p class="lead">
+                    We combines the essence of the social enterprise movement with the hacker spirit of high-growth technology startups and gives advice for future entrepreneurs who want to build a big company while creating sustainable value for society at-large. It is coded by Ariel Levin & Yoni Maymon, Software Engineering students from Afeka Academic College of Engineering. Kickstart is free online and world wide.
+                </p>
 
-<div class="row">
-    <div class="col-12" id="ourProjectsHeader">
-        <h2><b>Our Projects</b></h2>
-        <p class="lead">Here is a list of our leading projects, you can filter them by the search bar above</p>
-    </div>
-</div>
-
-<div class="row" id="features">
-    <div class="col-sm-4 feature" ng-repeat="project in topProjects | filter:main.searchText">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h4 class="panel-title">{{project.name}}</h4>
-            </div>
-            <div class="panel-body">
-                <img ng-src="{{project.thumb}}" alt="{{project.name}}" class="img-circle">
-
-                <p>{{project.description}}</p>
-
-                <a href="#/project/{{project.id}}" class="btn btn-large btn-primary btn-block">Check out</a>
+                <a ng-click="" class="btn btn-large btn-primary">Join Now</a>
+                <a ng-click="" class="btn btn-large btn-link">or login an existing account</a>
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12" id="ourProjectsHeader">
+            <h2><b>Our Projects</b> <small>we currently have <b>{{projectList.length}}</b> active projects, and counting..</small></h2>
+            <p class="lead">Here is a list of our leading projects, you can filter them by the search bar above</p>
+        </div>
+    </div>
+
+    <div class="row features">
+        <div class="col-sm-4 feature" ng-repeat="project in projectList | filter:main.searchText">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="panel-title">{{project.name}}</h4>
+                </div>
+                <div class="panel-body">
+                    <img ng-src="{{project.thumb}}" alt="{{project.name}}" class="img-circle">
+
+                    <p>{{project.description}}</p>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{project.fundPercent}}"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             ng-style="{ 'width': project.fundPercentWidth + '%' }">
+                            {{project.fundPercent}}%
+                        </div>
+                    </div>
+
+                    <div class="feature-text">
+                        Raised: {{project.moneybacked}}$ / {{project.AmountNeeded}}$
+                    </div>
+
+                    <div class="feature-text">
+                        End in: {{project.daysLeft}} Days
+                    </div>
+
+                    <a href="#/project/{{project.id}}" class="btn btn-large btn-primary btn-block">Check out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

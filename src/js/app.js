@@ -1,7 +1,8 @@
 var kickstartApp = angular.module('kickstartApp', [
     'ngRoute',
     'kickstartControllers',
-    'kickstartServices'
+    'kickstartServices',
+    'ngFileUpload'
 ]);
 
 kickstartApp.config(['$routeProvider', '$httpProvider',
@@ -14,6 +15,14 @@ kickstartApp.config(['$routeProvider', '$httpProvider',
             when('/project/:projectId', {
                 templateUrl: 'partials/project.html',
                 controller: 'projectCtrl'
+            }).
+            when('/projectList/:userId', {
+                templateUrl: 'partials/projectList.html',
+                controller: 'mainCtrl'
+            }).
+            when('/investList/:userId', {
+                templateUrl: 'partials/investList.html',
+                controller: 'mainCtrl'
             }).
             otherwise({
                 redirectTo: '/main'

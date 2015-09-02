@@ -23,65 +23,49 @@
 
             </form>
 
-
             <ul class="nav navbar-nav navbar-right">
 
                 <!-- if not signed in -->
-                <li><a ng-click="toggleModal('#registerModal')" role="button" data-toggle="modal" ng-if="!main.user.signed">Register</a></li>
-                <li><a ng-click="toggleModal('#loginModal')" role="button" data-toggle="modal" ng-if="!main.user.signed">Login</a></li>
+                <li><a ng-click="toggleModal('#registerModal')" role="button" data-toggle="modal" ng-if="!user.signed">Register</a></li>
+                <li><a ng-click="toggleModal('#loginModal')" role="button" data-toggle="modal" ng-if="!user.signed">Login</a></li>
 
-                <!-- if signed in and auth lvl 0-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 0">
-                    <li class="label">Welcome Admin</li>
+                <!-- if signed in -->
+                <div class="nav navbar-nav navbar-right" ng-show="user.signed">
+
+                    <li class="label user-title">
+                        Welcome {{user.UserName}} &nbsp;
+                        <small ng-show="user.UserAuthLvl == 0">(Admin)</small>
+                        <small ng-show="user.UserAuthLvl == 1">(Project Manager)</small>
+                        <small ng-show="user.UserAuthLvl == 2">(Investor)</small>
+                    </li>
+
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
                             My Account <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a ng-click="">Users Control</a></li>
-                            <li><a ng-click="">My Info</a></li>
-                            <li><a ng-click="">Option 3</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a ng-click="logoutRequest()">Logout</a></li>
-                        </ul>
-                    </li>
-                </div>
 
-                <!-- if signed in and auth lvl 1-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 1">
-                    <li class="label">Welcome Project Manager</li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
-                            My Account <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a ng-click="">Watch My Projects</a></li>
-                            <li><a ng-click="">Add New Project</a></li>
-                            <li><a ng-click="">My Info</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a ng-click="logoutRequest()">Logout</a></li>
-                        </ul>
-                    </li>
-                </div>
+                            <li><a ng-click="">Account Info</a></li>
 
-                <!-- if signed in and auth lvl 2-->
-                <div class="nav navbar-nav navbar-right" ng-if="main.user.signed && main.user.authLvl == 2">
-                    <li class="label">Welcome Investor</li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                           aria-expanded="false">
-                            My Account <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a ng-click="">Watch My Investments</a></li>
-                            <li><a ng-click="">My Info</a></li>
-                            <li><a ng-click="">Option 3</a></li>
                             <li role="separator" class="divider"></li>
+
+                            <!-- admin options -->
+                            <li ng-show="user.UserAuthLvl == 0"><a ng-click="">Users Control</a></li>
+
+                            <!-- project manager options -->
+                            <li ng-show="user.UserAuthLvl == 1"><a ng-click="toggleModal('#newProjectModal')">New Project</a></li>
+                            <li ng-show="user.UserAuthLvl == 1"><a href="#/projectList/{{user.Id}}">My Projects</a></li>
+
+                            <!-- investor options -->
+                            <li ng-show="user.UserAuthLvl == 1 || user.UserAuthLvl == 2"><a href="#/investList/{{user.Id}}">My Investments</a></li>
+
+                            <li role="separator" class="divider"></li>
+
                             <li><a ng-click="logoutRequest()">Logout</a></li>
                         </ul>
                     </li>
+
                 </div>
 
             </ul>
@@ -91,3 +75,4 @@
 
 <div ng-include src="'partials/login.html'"></div>
 <div ng-include src="'partials/register.html'"></div>
+<div ng-include src="'partials/newProject.html'"></div>

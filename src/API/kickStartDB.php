@@ -62,7 +62,7 @@ class  KickStartDB
                 return "Wrong UserName Or Password";
 
             $c_pass = $this->calculatePassword($pass);
-            $query = "SELECT UserName,UserAuthLvl FROM Users WHERE UserName=:user AND Password=:c_pass";
+            $query = "SELECT Id, UserName, UserAuthLvl FROM Users WHERE UserName=:user AND Password=:c_pass";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':user', $user);
             $this->stmt->bindParam(':c_pass', $c_pass);
@@ -132,15 +132,17 @@ class  KickStartDB
     }
 
 
-    public function addProject($name, $desc, $amount, $owner)
+    public function addProject($name, $desc, $amount, $endDate, $videoUrl, $owner)
     {
 
         try {
-            $query = "INSERT INTO projects (Name, Description, AmountNeeded, Owner) VALUES ( :name, :desc, :amount, :owner )";
+            $query = "INSERT INTO projects (Name, Description, AmountNeeded, VideoYouTubeID, EndAt, Owner) VALUES ( :name, :desc, :amount, :videoUrl, :endDate, :owner )";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':name', $name);
             $this->stmt->bindParam(':desc', $desc);
             $this->stmt->bindParam(':amount', $amount);
+            $this->stmt->bindParam(':videoUrl', $videoUrl);
+            $this->stmt->bindParam(':endDate', $endDate);
             $this->stmt->bindParam(':owner', $owner);
             if ($this->stmt->execute()) {
 
@@ -194,16 +196,15 @@ class  KickStartDB
 
     }
 
-    public function getTopProjects()
+    public function getProjectList()
     {
         try {
-            $query = "SELECT id,MainPic as thumb, name, description, (30-DATEDIFF(CURDATE(),CreatedAt)) AS daysleft, coalesce(money.gatherd,0) as moneybacked
+            $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec, coalesce(money.gatherd,0) as moneybacked
                       FROM projects
                       LEFT JOIN (
                       SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
-                      WHERE DATE_SUB(CURDATE(),INTERVAL 30 DAY) <= CreatedAt
-                      ORDER BY CreatedAt Asc
-                      LIMIT 6";
+                      WHERE Now() <= EndAt
+                      ORDER BY EndAt Asc";
             $this->stmt = $this->db->query($query);
             $this->stmt->execute();
             $result = $this->stmt->fetchAll();
@@ -221,7 +222,13 @@ class  KickStartDB
     {
 
         try {
-            $query = "SELECT * FROM projects WHERE Owner=:userName";
+            $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec,
+                      coalesce(money.gatherd,0) as moneybacked, (Now() <= EndAt) as Active
+                      FROM projects
+                      LEFT JOIN (
+                      SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
+                      WHERE Owner = :userName
+                      ORDER BY Active Desc, EndAt Asc";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':userName', $userName);
             $this->stmt->execute();
@@ -245,7 +252,13 @@ class  KickStartDB
     {
 
         try {
-            $query = "SELECT projectId,Name,Amount FROM backers,projects WHERE backers.projectId = projects.ID AND UserName = :userName";
+            $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec,
+                      coalesce(money.gatherd,0) as moneybacked, (Now() <= EndAt) as Active, backers.Amount as UserInvestAmount
+                      FROM backers, projects
+                      LEFT JOIN (
+                      SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
+                      WHERE backers.projectId = projects.ID AND backers.UserName = :userName
+                      ORDER BY Active Desc, EndAt Asc";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':userName', $userName);
             $this->stmt->execute();
@@ -269,7 +282,7 @@ class  KickStartDB
     {
 
         try {
-            $query = "SELECT * FROM projects WHERE ID=:pid";
+            $query = "SELECT *, (Now() <= EndAt) as Active FROM projects WHERE ID=:pid";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':pid', $pid);
             $this->stmt->execute();

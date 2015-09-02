@@ -11,6 +11,7 @@
     "angular-resource": "~1.4.4",
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
-    "blueimp-gallery": "~2.16.0"
+    "blueimp-gallery": "~2.16.0",
+    "ng-file-upload": "~7.0.15"
   }
 }
