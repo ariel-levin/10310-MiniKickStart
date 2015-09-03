@@ -41,6 +41,9 @@
                     <div class="feature-text" ng-show="project.Active">
                         End in: {{project.daysLeft}} Days
                     </div>
+                    <div class="feature-text" ng-show="!project.Active">
+                        Time Ended
+                    </div>
 
                     <a href="#/project/{{project.id}}" class="btn btn-large btn-primary">Watch</a>
                 </div>

@@ -299,6 +299,10 @@ body {
     margin: 55px 0 50px 0;
 }
 
+.project-list .features p {
+    min-height: 120px;
+}
+
 .project-list .features .btn {
     width: 40%;
     margin: 0 10px 0 10px;
