@@ -6,7 +6,7 @@ kickstartServices.factory('User', function () {
 });
 
 
-kickstartServices.factory('ApiService', function ($http, $log, $q) {
+kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
 
     function getProjectList() {
         var deferred = $q.defer();
@@ -136,17 +136,69 @@ kickstartServices.factory('ApiService', function ($http, $log, $q) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
             .success(function (res) {
-                $log.debug("ApiService: createNewProject(1) success: " + res);
+                $log.debug("ApiService: createNewProject success: " + res);
                 deferred.resolve(res);
 
-                // TODO: add file upload after the first insert succeed
             })
             .error(function (reason) {
-                $log.error("ApiService: createNewProject(1) failed: ", reason);
+                $log.error("ApiService: createNewProject failed: ", reason);
                 deferred.reject(reason);
             });
         return deferred.promise;
     }
+
+    function uploadProjectMainPic(file, pid) {
+        var deferred = $q.defer();
+
+        file.upload = Upload.upload({
+            url: 'API/Request.php',
+            method: 'POST',
+            fields: { request:'uploadMainPic', pid: pid },
+            file: file,
+            fileFormDataName: 'mainPic'
+        });
+
+        file.upload.then(function (res) {
+
+            $log.debug("ApiService: uploadProjectMainPic success: " + res);
+            deferred.resolve(res);
+
+        }, function (response) {
+
+            $log.error("ApiService: uploadProjectMainPic failed: ", response);
+            deferred.reject(response);
+
+        });
+
+        return deferred.promise;
+    }
+
+    function uploadProjectPics(files, pid) {
+        var deferred = $q.defer();
+
+        files.upload = Upload.upload({
+            url: 'API/Request.php',
+            method: 'POST',
+            fields: { request:'uploadPics', pid: pid },
+            file: files,
+            fileFormDataName: 'files[]'
+        });
+
+        files.upload.then(function (res) {
+
+            $log.debug("ApiService: uploadProjectPics success: " + res);
+            deferred.resolve(res);
+
+        }, function (response) {
+
+            $log.error("ApiService: uploadProjectPics failed: ", response);
+            deferred.reject(response);
+
+        });
+
+        return deferred.promise;
+    }
+
 
 
     return {
@@ -156,7 +208,9 @@ kickstartServices.factory('ApiService', function ($http, $log, $q) {
         getProject: getProject,
         getUserProjects: getUserProjects,
         getUserInvestments: getUserInvestments,
-        createNewProject: createNewProject
+        createNewProject: createNewProject,
+        uploadProjectMainPic: uploadProjectMainPic,
+        uploadProjectPics: uploadProjectPics
 
     };
 

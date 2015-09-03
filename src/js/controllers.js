@@ -10,14 +10,16 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         $scope.user = {};
 
 
-        $scope.resetFormFields = function () {
+        var resetFormFields = function () {
             $scope.login = {};
             $scope.register = {};
             $scope.newProject = {};
             $scope.newProject.endDateField = new Date();
+            $scope.newProject.endDateField.setDate($scope.newProject.endDateField.getDate() + 1);
+            $scope.newProject.minDate = $scope.newProject.endDateField.toISOString();
         };
 
-        $scope.resetFormFields();
+        resetFormFields();
 
 
         $scope.loadProjectList = function() {
@@ -65,7 +67,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         $scope.logoutRequest = function () {
             $scope.user = {};
             alert("logged out success");
-            $scope.resetFormFields();
+            resetFormFields();
         };
 
 
@@ -89,14 +91,10 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                         $scope.getUserInvestments();
                     }
 
-                    //alert("Login Success!\n"
-                    //    + "\nUserName: " + res.UserName
-                    //    + "\nUserAuthLvl: " + res.UserAuthLvl);
-
                     if (!isRegistered) {
                         $('#loginModal').modal('toggle');
                     }
-                    $scope.resetFormFields();
+                    resetFormFields();
 
                 }, function userLoginError(reason) {
                     $log.error("mainCtrl: userLogin failed. reason: ", reason);
@@ -112,7 +110,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                     $scope.login.pass = $scope.register.pass;
                     $scope.userLogin(true);
                     $('#registerModal').modal('toggle');
-                    $scope.resetFormFields();
+                    resetFormFields();
 
                 }, function userRegisterError(reason) {
                     $log.error("mainCtrl: userRegister failed. reason: ", reason);
@@ -120,15 +118,22 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         };
 
         $scope.createNewProject = function() {
+
             $scope.newProject.owner = $scope.user.UserName;
             $scope.newProject.endDate = $scope.newProject.endDateField.toISOString();
             ApiService.createNewProject($scope.newProject)
                 .then(function createNewProjectSuccess(res) {
-                    $log.debug("mainCtrl: createNewProject success: " + res);
-                    alert("Created new project successfully");
-                    $('#newProjectModal').modal('toggle');
-                    $scope.resetFormFields();
-                    $scope.refreshProjects();
+
+                    if ($scope.newProject.mainPic) {
+                        uploadProjectMainPic(res);
+
+                    } else if ($scope.newProject.pics) {
+                        uploadProjectPics(res);
+
+                    } else {
+                        $log.debug("mainCtrl: createNewProject(1) success: " + res);
+                        finishedCreatingProject();
+                    }
 
                 }, function createNewProjectError(reason) {
                     $log.error("mainCtrl: createNewProject failed. reason: ", reason);
@@ -171,7 +176,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             project.fundPercentWidth = Math.min(project.fundPercent, 100);
         };
 
-        $scope.refreshProjects = function() {
+        var refreshProjects = function() {
             $scope.loadProjectList();
             if ($scope.user.UserAuthLvl == 1) {
                 $scope.getUserProjects();
@@ -181,6 +186,47 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             }
             $route.reload();
         };
+
+        var uploadProjectMainPic = function (pid) {
+            ApiService.uploadProjectMainPic($scope.newProject.mainPic, pid)
+                .then(function uploadProjectMainPicSuccess(res) {
+                    $log.debug("mainCtrl: uploadProjectMainPic success: " + res);
+
+                    if ($scope.newProject.pics) {
+                        uploadProjectPics(pid);
+                    } else {
+                        $log.debug("mainCtrl: createNewProject(2) success: " + res);
+                        finishedCreatingProject();
+                    }
+
+                }, function uploadProjectMainPicError(reason) {
+                    $log.error("mainCtrl: uploadProjectMainPic failed. reason: ", reason);
+                    alert("invalid project main picture");
+                });
+        };
+
+        var uploadProjectPics = function (pid) {
+            ApiService.uploadProjectPics($scope.newProject.pics, pid)
+                .then(function uploadProjectMainPicSuccess(res) {
+
+                    $log.debug("mainCtrl: uploadProjectPics success: " + res);
+                    $log.debug("mainCtrl: createNewProject(3) success: " + res);
+
+                    finishedCreatingProject();
+
+                }, function uploadProjectMainPicError(reason) {
+                    $log.error("mainCtrl: uploadProjectPics failed. reason: ", reason);
+                    alert("invalid project pictures");
+                });
+        };
+
+        var finishedCreatingProject = function() {
+            alert("Created new project successfully");
+            $('#newProjectModal').modal('toggle');
+            resetFormFields();
+            refreshProjects();
+        };
+
 
 
 

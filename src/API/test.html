@@ -4,12 +4,12 @@
 
 <form action="Request.php" method="post" enctype="multipart/form-data">
     Select image to upload:
-    <input name="mainPic" type="file" /><br>
-    <input name="name" type="text"/><br>
+    <input name="files[]" type="file" multiple /><br>
+    <input name="pid" type="text"/><br>
     <input name="description" type="text"/><br>
     <input name="amount" type="text"/><br>
     <input name="owner" type="text"/><br>
     <input name="date" type="datetime-local"/><br>
-    <input name="request" type="hidden" value="addProject"><br>
+    <input name="request" type="hidden" value="uploadPics"><br>
     <input type="submit" value="submit" name="submit"><br>
 </form>

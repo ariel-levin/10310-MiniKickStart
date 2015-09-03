@@ -71,16 +71,20 @@
                             <input class="form-control" type="date" name="projectEndDateField" id="projectEndDateField"
                                    ng-model="newProject.endDateField"
                                    ng-model-options="{updateOn: 'blur'}"
-                                   min="2015-09-02"
+                                   min="{{newProject.minDate | date:'yyyy-MM-dd'}}"
                                    max="2020-01-01"
                                    required />
                         </div>
                     </div>
 
+
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="projectMainPicField">Main Picture</label>
                         <div class="col-lg-9">
                             <input class="form-control" type="file" name="mainPic" id="projectMainPicField"
+                                   accept="image/*"
+                                   ngf-select
+                                   ngf-max-size="2MB"
                                    ng-model="newProject.mainPic"
                                    ng-model-options="{updateOn: 'blur'}" />
                         </div>
@@ -90,6 +94,8 @@
                         <label class="col-lg-3 control-label" for="projectPicsField">More Pictures</label>
                         <div class="col-lg-9">
                             <input class="form-control" type="file" name="projectPicsField" id="projectPicsField"
+                                   accept="image/*"
+                                   ngf-select
                                    ng-model="newProject.pics"
                                    ng-model-options="{updateOn: 'blur'}" multiple />
                         </div>
