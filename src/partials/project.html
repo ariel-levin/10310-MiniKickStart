@@ -52,13 +52,13 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" ng-show="project.pics">
         <div class="col-12 div-center">
             <h2><b>Project Gallery</b></h2>
         </div>
     </div>
 
-    <div class="row project-img-row">
+    <div class="row project-img-row" ng-show="project.pics">
         <div class="div-center" id="projectImages">
             <div class="col-sm-3" ng-repeat="pic in project.pics">
                 <a href="{{pic.path}}">

@@ -1,22 +1,22 @@
-<div class="modal fade" id="newProjectModal">
+<div class="modal fade" id="editProjectModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">&times;</button>
-                <h2 class="modal-title">New Project</h2>
+                <h2 class="modal-title">Edit Project</h2>
             </div>
 
             <div class="modal-body">
 
-                <form class="form-horizontal" name="newProjectForm" ng-submit="newProjectRequest(newProjectForm.$valid, false)">
+                <form class="form-horizontal" name="editProjectForm" ng-submit="editProjectRequest(editProjectForm.$valid, false)">
 
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="projectNameField">Name</label>
                         <div class="col-lg-9">
                             <input class="form-control" type="text" name="projectNameField" id="projectNameField"
                                    placeholder="Project name"
-                                   ng-model="newProject.name"
+                                   ng-model="editProject.name"
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-minlength="3"
                                    ng-maxlength="30"
@@ -30,7 +30,7 @@
                         <div class="col-lg-9">
                             <textarea class="form-control" type="text" name="projectDescField" id="projectDescField"
                                    placeholder="Description"
-                                   ng-model="newProject.desc"
+                                   ng-model="editProject.desc"
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-minlength="10"
                                    ng-maxlength="500"
@@ -41,39 +41,14 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="projectFundField">Fund</label>
-                        <div class="col-lg-9">
-                            <input class="form-control" type="number" name="projectFundField" id="projectFundField"
-                                   placeholder="How much fund do you need"
-                                   ng-model="newProject.fund"
-                                   ng-model-options="{updateOn: 'blur'}"
-                                   ng-minlength="1"
-                                   ng-maxlength="7"
-                                   required />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="col-lg-3 control-label" for="projectVideoField">Youtube</label>
                         <div class="col-lg-9">
                             <input class="form-control" type="text" name="projectVideoField" id="projectVideoField"
                                    placeholder="Please add a YouTube video ID (11 characters)"
-                                   ng-model="newProject.video"
+                                   ng-model="editProject.video"
                                    ng-model-options="{updateOn: 'blur'}"
                                    ng-minlength="11"
                                    ng-maxlength="11" />
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="projectEndDateField">End Date</label>
-                        <div class="col-lg-9">
-                            <input class="form-control" type="datetime-local" name="projectEndDateField" id="projectEndDateField"
-                                   ng-model="newProject.endDateField"
-                                   ng-model-options="{updateOn: 'blur'}"
-                                   min="{{newProject.minDate | date:'yyyy-MM-ddTHH:mm'}}"
-                                   max="2020-01-01T00:00"
-                                   required />
                         </div>
                     </div>
 
@@ -84,18 +59,18 @@
                                    accept="image/*"
                                    ngf-select
                                    ngf-max-size="2MB"
-                                   ng-model="newProject.mainPic"
+                                   ng-model="editProject.mainPic"
                                    ng-model-options="{updateOn: 'blur'}" />
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-lg-3 control-label" for="projectPicsField">More Pictures</label>
+                        <label class="col-lg-3 control-label" for="projectPicsField">Add Pictures</label>
                         <div class="col-lg-9">
                             <input class="form-control" type="file" name="projectPicsField" id="projectPicsField"
                                    accept="image/*"
                                    ngf-select
-                                   ng-model="newProject.pics"
+                                   ng-model="editProject.pics"
                                    ng-model-options="{updateOn: 'blur'}" multiple />
                         </div>
                     </div>
@@ -104,7 +79,7 @@
                     <div class="form-group">
                         <div class="pull-right modal-btn-div">
                             <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
-                            <input type="submit" class="btn btn-danger" value="Create New Project" >
+                            <input type="submit" class="btn btn-danger" value="Edit Project" >
                         </div>
                     </div>
 

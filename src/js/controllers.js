@@ -16,6 +16,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             $scope.newProject = {};
             $scope.newProject.endDateField = new Date();
             $scope.newProject.endDateField.setDate($scope.newProject.endDateField.getDate() + 1);
+            $scope.newProject.endDateField.setSeconds(0,0);
             $scope.newProject.minDate = $scope.newProject.endDateField.toISOString();
         };
 
@@ -120,7 +121,9 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         $scope.createNewProject = function() {
 
             $scope.newProject.owner = $scope.user.UserName;
+            $scope.newProject.endDateField.setHours($scope.newProject.endDateField.getHours() + 3);
             $scope.newProject.endDate = $scope.newProject.endDateField.toISOString();
+
             ApiService.createNewProject($scope.newProject)
                 .then(function createNewProjectSuccess(res) {
 
@@ -249,10 +252,23 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
         $scope.project.id = $routeParams.projectId;
         $scope.backersVisible = false;
 
+
+        var resetFormFields = function () {
+            $scope.editProject = {};
+        };
+
+        resetFormFields();
+
+
+
         ApiService.getProject($scope.project.id)
             .then(function getProjectSuccess(res) {
                 $log.debug("projectCtrl: getProject success: " + res);
                 $scope.project = res;
+
+                if (res.pics.length == 0) {
+                    res.pics = undefined;
+                }
 
                 $scope.project.amountCollected = 0;
                 $scope.project.backers.forEach(function(entry) {
