@@ -223,7 +223,7 @@ class  KickStartDB
 
         try {
             $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec,
-                      coalesce(money.gatherd,0) as moneybacked, (Now() <= EndAt) as Active
+                      coalesce(money.gatherd,0) as moneybacked, (Now() <= EndAt) as Active, VideoYouTubeID
                       FROM projects
                       LEFT JOIN (
                       SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
@@ -357,6 +357,26 @@ class  KickStartDB
             return $final_result;
         }
 
+    }
+
+    function updateProjectInfo($pid,$name,$desc,$url){
+        try {
+            $query = "UPDATE projects SET Name = :name, Description = :desc, VideoYouTubeID = :url WHERE ID = :pid";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':pid', $pid);
+            $this->stmt->bindParam(':name', $name);
+            $this->stmt->bindParam(':desc', $desc);
+            $this->stmt->bindParam(':url', $url);
+            if ($this->stmt->execute())
+                return "OK";
+            else
+                return "Error";
+
+        }catch (PDOException $e) {
+            $this->stmt = null;
+            $final_result['reason'] = $e->getMessage();
+            return $final_result;
+        }
     }
 
 

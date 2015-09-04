@@ -147,6 +147,27 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         return deferred.promise;
     }
 
+    function editProject(project) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=updateProjectInfo&pid=" + project.id + "&name=" + project.name + "&description=" +
+            project.desc + "&videoUrl=" + project.video,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: editProject success: " + res);
+                deferred.resolve(res);
+
+            })
+            .error(function (reason) {
+                $log.error("ApiService: editProject failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
     function uploadProjectMainPic(file, pid) {
         var deferred = $q.defer();
 
@@ -210,7 +231,8 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         getUserInvestments: getUserInvestments,
         createNewProject: createNewProject,
         uploadProjectMainPic: uploadProjectMainPic,
-        uploadProjectPics: uploadProjectPics
+        uploadProjectPics: uploadProjectPics,
+        editProject: editProject
 
     };
 

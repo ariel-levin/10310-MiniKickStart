@@ -135,6 +135,15 @@ switch ($type) {
         }
         break;
 
+
+    case "updateProjectInfo":
+        $result = $kickStartDB->updateProjectInfo($_POST['pid'], $_POST['name'], $_POST['description'],$_POST['videoUrl']);
+        if ($result == "Error") {
+            $result = "couldn't update project";
+            http_response_code(400);
+        }
+        break;
+
 }
 
 echo json_encode($result);

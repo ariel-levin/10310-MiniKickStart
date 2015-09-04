@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="row" ng-show="project.VideoYouTubeID">
+    <div class="row" ng-show="project.VideoYouTubeID && project.VideoYouTubeID !== 'undefined'">
         <div class="col-12 div-center">
             <iframe class="project-video" width="560" height="315" ng-src="{{getYouTubeEmbedURL()}}" frameborder="0" allowfullscreen></iframe>
         </div>

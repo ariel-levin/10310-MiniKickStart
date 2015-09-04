@@ -14,6 +14,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             $scope.login = {};
             $scope.register = {};
             $scope.newProject = {};
+            $scope.editProject = {};
             $scope.newProject.endDateField = new Date();
             $scope.newProject.endDateField.setDate($scope.newProject.endDateField.getDate() + 1);
             $scope.newProject.endDateField.setSeconds(0,0);
@@ -65,6 +66,14 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             }
         };
 
+        $scope.editProjectRequest = function (valid) {
+            if (valid) {
+                editProject();
+            } else {
+                alert("some edit project form fields are incorrect");
+            }
+        };
+
         $scope.logoutRequest = function () {
             $scope.user = {};
             alert("logged out success");
@@ -72,7 +81,14 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         };
 
 
-        $scope.toggleModal = function (modal) {
+        $scope.toggleModal = function (modal, type, object) {
+            if (type === "project") {
+                fillProjectModalDetails(object);
+
+            } else if (type === "user") {
+                fillUserModalDetails(object);
+
+            }
             $(modal).modal('toggle');
         };
 
@@ -128,18 +144,43 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 .then(function createNewProjectSuccess(res) {
 
                     if ($scope.newProject.mainPic) {
-                        uploadProjectMainPic(res);
+                        uploadProjectMainPic(res, false);
 
                     } else if ($scope.newProject.pics) {
-                        uploadProjectPics(res);
+                        uploadProjectPics(res, false);
 
                     } else {
-                        $log.debug("mainCtrl: createNewProject(1) success: " + res);
-                        finishedCreatingProject();
+                        $log.debug("mainCtrl: createNewProject success: " + res);
+                        finishedCreatingProject(false);
                     }
 
                 }, function createNewProjectError(reason) {
                     $log.error("mainCtrl: createNewProject failed. reason: ", reason);
+                });
+        };
+
+        var editProject = function() {
+
+            if (!$scope.editProject.video || $scope.editProject.video.length <= 0) {
+                $scope.editProject.video = undefined;
+            }
+
+            ApiService.editProject($scope.editProject)
+                .then(function editProjectSuccess(res) {
+
+                    if ($scope.editProject.mainPic) {
+                        uploadProjectMainPic($scope.editProject.id, true);
+
+                    } else if ($scope.editProject.pics) {
+                        uploadProjectPics($scope.editProject.id, true);
+
+                    } else {
+                        $log.debug("mainCtrl: editProject success: " + res);
+                        finishedCreatingProject(true);
+                    }
+
+                }, function editProjectError(reason) {
+                    $log.error("mainCtrl: editProject failed. reason: ", reason);
                 });
         };
 
@@ -190,16 +231,19 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             $route.reload();
         };
 
-        var uploadProjectMainPic = function (pid) {
-            ApiService.uploadProjectMainPic($scope.newProject.mainPic, pid)
+        var uploadProjectMainPic = function (pid, editMode) {
+
+            var mainPic = (editMode) ? $scope.editProject.mainPic : $scope.newProject.mainPic ;
+            var pics = (editMode) ? $scope.editProject.pics : $scope.newProject.pics ;
+
+            ApiService.uploadProjectMainPic(mainPic, pid)
                 .then(function uploadProjectMainPicSuccess(res) {
                     $log.debug("mainCtrl: uploadProjectMainPic success: " + res);
 
-                    if ($scope.newProject.pics) {
-                        uploadProjectPics(pid);
+                    if (pics) {
+                        uploadProjectPics(pid, editMode);
                     } else {
-                        $log.debug("mainCtrl: createNewProject(2) success: " + res);
-                        finishedCreatingProject();
+                        finishedCreatingProject(editMode);
                     }
 
                 }, function uploadProjectMainPicError(reason) {
@@ -208,14 +252,15 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        var uploadProjectPics = function (pid) {
-            ApiService.uploadProjectPics($scope.newProject.pics, pid)
+        var uploadProjectPics = function (pid, editMode) {
+
+            var pics = (editMode) ? $scope.editProject.pics : $scope.newProject.pics ;
+
+            ApiService.uploadProjectPics(pics, pid)
                 .then(function uploadProjectMainPicSuccess(res) {
 
                     $log.debug("mainCtrl: uploadProjectPics success: " + res);
-                    $log.debug("mainCtrl: createNewProject(3) success: " + res);
-
-                    finishedCreatingProject();
+                    finishedCreatingProject(editMode);
 
                 }, function uploadProjectMainPicError(reason) {
                     $log.error("mainCtrl: uploadProjectPics failed. reason: ", reason);
@@ -223,12 +268,34 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        var finishedCreatingProject = function() {
-            alert("Created new project successfully");
-            $('#newProjectModal').modal('toggle');
+        var finishedCreatingProject = function(editMode) {
+            $log.debug("mainCtrl: finishedCreatingProject success");
+            if (editMode) {
+                alert("Edited project successfully");
+                $('#editProjectModal').modal('toggle');
+
+            } else {
+                alert("Created new project successfully");
+                $('#newProjectModal').modal('toggle');
+            }
             resetFormFields();
             refreshProjects();
         };
+
+        var fillProjectModalDetails = function (project) {
+            $scope.editProject.id = project.id;
+            $scope.editProject.name = project.name;
+            $scope.editProject.desc = project.description;
+            if (project.VideoYouTubeID === 'undefined' || project.VideoYouTubeID.length == 0) {
+                $scope.editProject.video = undefined;
+            } else {
+                $scope.editProject.video = project.VideoYouTubeID;
+            }
+        }
+
+        var fillUserModalDetails = function (user) {
+
+        }
 
 
 
@@ -251,14 +318,6 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
         $scope.project = {};
         $scope.project.id = $routeParams.projectId;
         $scope.backersVisible = false;
-
-
-        var resetFormFields = function () {
-            $scope.editProject = {};
-        };
-
-        resetFormFields();
-
 
 
         ApiService.getProject($scope.project.id)

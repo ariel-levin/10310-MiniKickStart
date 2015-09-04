@@ -42,9 +42,11 @@
                     </div>
 
                     <a href="#/project/{{project.id}}" class="btn btn-large btn-primary">Watch</a>
-                    <a ng-click="" class="btn btn-large btn-danger" ng-show="project.Active">Edit</a>
+                    <a ng-click="toggleModal('#editProjectModal', 'project', project)" class="btn btn-large btn-danger" ng-show="project.Active">Edit</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div ng-include src="'partials/editProject.html'"></div>

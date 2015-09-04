@@ -55,10 +55,10 @@
 
                             <!-- project manager options -->
                             <li ng-show="user.UserAuthLvl == 1"><a ng-click="toggleModal('#newProjectModal')">New Project</a></li>
-                            <li ng-show="user.UserAuthLvl == 1"><a href="#/projectList/{{user.Id}}">My Projects</a></li>
+                            <li ng-show="user.UserAuthLvl == 1"><a href="#/myProjects/{{user.Id}}">My Projects</a></li>
 
                             <!-- investor options -->
-                            <li ng-show="user.UserAuthLvl == 1 || user.UserAuthLvl == 2"><a href="#/investList/{{user.Id}}">My Investments</a></li>
+                            <li ng-show="user.UserAuthLvl == 1 || user.UserAuthLvl == 2"><a href="#/myInvestments/{{user.Id}}">My Investments</a></li>
 
                             <li role="separator" class="divider"></li>
 
