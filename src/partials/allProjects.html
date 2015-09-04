@@ -1,3 +1,13 @@
+<!--
+/* Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */ -->
+
+
 <div class="admin-mode">
 
     <div class="container feature-list">
@@ -9,7 +19,7 @@
         </div>
 
         <div class="row features">
-            <div class="col-sm-4 feature" ng-repeat="project in user.projects | filter:main.searchText">
+            <div class="col-sm-4 feature" ng-repeat="project in user.projects | filter:user.searchText">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h4 class="panel-title">

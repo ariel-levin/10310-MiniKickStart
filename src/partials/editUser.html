@@ -1,3 +1,13 @@
+<!--
+/* Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */ -->
+
+
 <div class="modal fade" id="editUserModal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -9,7 +19,7 @@
 
             <div class="modal-body">
 
-                <form class="form-horizontal" name="editUserForm" ng-submit="editUserRequest(editUserForm.$valid, editUser.currentUser)">
+                <form class="form-horizontal" name="editUserForm" ng-submit="editUserRequest(editUserForm.$valid)">
 
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="regInputEmail">Email</label>
@@ -74,7 +84,7 @@
                             <select class="form-control" name="authLevel" id="authLevel" ng-model="editUser.auth" required>
                                 <option value="2">Investor - Normal User</option>
                                 <option value="1">Project Manager - Advanced</option>
-                                <option value="0" ng-show="user.UserAuthLvl == 0">Admin</option>
+                                <option value="0">Admin</option>
                             </select>
                         </div>
                     </div>

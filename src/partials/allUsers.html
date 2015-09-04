@@ -1,3 +1,13 @@
+<!--
+/* Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */ -->
+
+
 <div class="admin-mode">
 
     <div class="container user-list">
@@ -9,7 +19,7 @@
         </div>
 
         <div class="row features">
-            <div class="col-sm-4 feature" ng-repeat="u in admin.allUsers | filter:main.searchText">
+            <div class="col-sm-4 feature" ng-repeat="u in user.allUsers | filter:user.searchText">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -39,9 +49,10 @@
                             </div>
                         </div>
 
-                        <a ng-click="toggleModal('#editUserModal', 'user', u)" class="btn btn-large btn-primary">Edit</a>
+                        <a ng-click="toggleModal('#editUserModal', 'user', u)" class="btn btn-large btn-primary" ng-show="u.UserName != user.UserName">Edit</a>
                         <a ng-click="changeUserStatusRequest(u.UserName, u.Active)" class="btn btn-large btn-danger" ng-show="u.Active == 1 && u.UserName != user.UserName">Deactivate</a>
                         <a ng-click="changeUserStatusRequest(u.UserName, u.Active)" class="btn btn-large btn-success" ng-show="u.Active == 0">Activate</a>
+                        <a ng-click="" disabled class="btn btn-large btn-primary" ng-show="u.UserName == user.UserName" id="adminAccountEditBtn">Editable via My Account Menu</a>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,14 @@
-var kickstartServices = angular.module('kickstartServices', ['ngResource']);
+/*
+ * Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */
 
+
+var kickstartServices = angular.module('kickstartServices', ['ngResource']);
 
 
 kickstartServices.factory('SessionService', function() {

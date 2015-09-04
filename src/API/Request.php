@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: yoni
- * Date: 24/08/2015
- * Time: 10:01
- */
 
 require 'kickStartDB.php';
 

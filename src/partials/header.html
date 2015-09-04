@@ -1,3 +1,13 @@
+<!--
+/* Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */ -->
+
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
 
@@ -15,7 +25,7 @@
         <div class="collapse navbar-collapse component" id="navbar-responsive-collapse">
             <form class="navbar-form navbar-left" role="search">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search" ng-model="main.searchText"/>
+                    <input type="text" class="form-control" placeholder="Search" ng-model="user.searchText" ng-controller="mainCtrl"/>
                     <button class="btn btn-default">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
@@ -77,4 +87,4 @@
 <div ng-include src="'partials/login.html'"></div>
 <div ng-include src="'partials/register.html'"></div>
 <div ng-include src="'partials/newProject.html'"></div>
-<div ng-include src="'partials/editUser.html'"></div>
+<div ng-include src="'partials/editMyAccount.html'"></div>

@@ -1,11 +1,16 @@
+/*
+ * Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */
+
+
 var kickstartControllers = angular.module('kickstartControllers', []);
 
-kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, $route, $filter, $location, Data) {
-
-        $scope.main = {};
-
-        $scope.main.searchText = "";
-
+kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, $route, $filter, $location) {
 
         var resetFormFields = function () {
             $scope.login = {};
@@ -13,7 +18,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             $scope.register.gender = "Male";
             $scope.register.auth = '2';
             $scope.editUser = {};
-            $scope.editUser.currentUser = false;
+            $scope.editCurrentUser = {};
             $scope.newProject = {};
             $scope.editProject = {};
             $scope.newProject.endDateField = new Date();
@@ -25,14 +30,14 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         resetFormFields();
 
 
-        $scope.loadProjectList = function() {
+        var loadProjectList = function() {
             ApiService.getProjectList()
                 .then(function getProjectListSuccess(res) {
                     $log.debug("mainCtrl: getProjectList success: " + res);
                     $scope.projectList = res;
 
                     $scope.projectList.forEach(function (p) {
-                        $scope.getProjectTimeData(p);
+                        getProjectTimeData(p);
                     });
 
                     if ($scope.user && $scope.user.signed && $scope.user.UserAuthLvl == 0) {
@@ -44,12 +49,12 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.loadProjectList();
+        loadProjectList();
 
 
         $scope.loginRequest = function (valid) {
             if (valid) {
-                $scope.userLogin(false);
+                userLogin(false);
             } else {
                 alert("some login form fields are incorrect");
             }
@@ -57,7 +62,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
 
         $scope.registerRequest = function (valid) {
             if (valid) {
-                $scope.userRegister();
+                userRegister();
             } else {
                 alert("some register form fields are incorrect");
             }
@@ -65,7 +70,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
 
         $scope.newProjectRequest = function (valid) {
             if (valid) {
-                $scope.createNewProject();
+                createNewProject();
             } else {
                 alert("some new project form fields are incorrect");
             }
@@ -79,9 +84,18 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             }
         };
 
-        $scope.editUserRequest = function (valid, currentUser) {
+        $scope.editUserRequest = function (valid) {
             if (valid) {
-                editUser(currentUser);
+                editUser();
+            } else {
+                alert("some edit user form fields are incorrect");
+            }
+        };
+
+
+        $scope.editCurrentUserRequest = function (valid) {
+            if (valid) {
+                editCurrentUser();
             } else {
                 alert("some edit user form fields are incorrect");
             }
@@ -90,7 +104,6 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         $scope.logoutRequest = function (userEdited) {
             ApiService.removeUserSession();
             $scope.user = {};
-            $scope.admin = {};
             if (userEdited) {
                 alert("Your info was edited successfully, please login again");
             } else {
@@ -114,7 +127,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         };
 
 
-        $scope.userLogin = function(isRegistered) {
+        var userLogin = function(isRegistered) {
             ApiService.userLogin($scope.login)
                 .then(function userLoginSuccess(res) {
                     $log.debug("mainCtrl: userLogin success: " + res);
@@ -127,11 +140,11 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                         getAllUsers();
 
                     } else if ($scope.user.UserAuthLvl == 1) {
-                        $scope.getUserProjects();
-                        $scope.getUserInvestments();
+                        getUserProjects();
+                        getUserInvestments();
 
                     } else if ($scope.user.UserAuthLvl == 2) {
-                        $scope.getUserInvestments();
+                        getUserInvestments();
                     }
 
                     if (!isRegistered) {
@@ -145,13 +158,13 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.userRegister = function() {
+        var userRegister = function() {
             ApiService.userRegister($scope.register)
                 .then(function userRegisterSuccess(res) {
                     $log.debug("mainCtrl: userRegister success: " + res);
                     $scope.login.email = $scope.register.email;
                     $scope.login.pass = $scope.register.pass;
-                    $scope.userLogin(true);
+                    userLogin(true);
                     $('#registerModal').modal('toggle');
                     resetFormFields();
 
@@ -161,7 +174,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.createNewProject = function() {
+        var createNewProject = function() {
 
             $scope.newProject.owner = $scope.user.UserName;
             $scope.newProject.endDateField.setHours($scope.newProject.endDateField.getHours() + 3);
@@ -225,14 +238,14 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.getUserProjects = function () {
+        var getUserProjects = function () {
             ApiService.getUserProjects($scope.user.UserName)
                 .then(function getUserProjectsSuccess(res) {
                     $log.debug("mainCtrl: getUserProjects success: " + res);
                     $scope.user.projects = res;
 
                     $scope.user.projects.forEach(function(p) {
-                        $scope.getProjectTimeData(p);
+                        getProjectTimeData(p);
                     });
 
                 }, function getUserProjectsError(reason) {
@@ -240,14 +253,14 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.getUserInvestments = function () {
+        var getUserInvestments = function () {
             ApiService.getUserInvestments($scope.user.UserName)
                 .then(function getUserInvestmentsSuccess(res) {
                     $log.debug("mainCtrl: getUserInvestments success: " + res);
                     $scope.user.investments = res;
 
                     $scope.user.investments.forEach(function(p) {
-                        $scope.getProjectTimeData(p);
+                        getProjectTimeData(p);
                     });
 
                 }, function getUserInvestmentsError(reason) {
@@ -255,7 +268,7 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
-        $scope.getProjectTimeData = function (project) {
+        var getProjectTimeData = function (project) {
             project.daysLeft = Math.round(parseInt((project.milliSec / 1000) / 86400));
             project.fundPercent = Math.round((project.moneybacked / project.AmountNeeded) * 100);
             project.fundPercentWidth = Math.min(project.fundPercent, 100);
@@ -296,12 +309,12 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         };
 
         var refreshProjects = function() {
-            $scope.loadProjectList();
+            loadProjectList();
             if ($scope.user.UserAuthLvl == 1) {
-                $scope.getUserProjects();
-                $scope.getUserInvestments();
+                getUserProjects();
+                getUserInvestments();
             } else if ($scope.user.UserAuthLvl == 2) {
-                $scope.getUserInvestments();
+                getUserInvestments();
             }
             $route.reload();
         };
@@ -309,9 +322,6 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
         var refreshAllUsers = function() {
             if ($scope.user.UserAuthLvl == 0) {
                 getAllUsers();
-                var currentPageTemplate = $route.current.templateUrl;
-                $templateCache.remove(currentPageTemplate);
-                $route.reload();
             }
         };
 
@@ -411,41 +421,42 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 return;
             }
 
+            $log.debug("toggleAccountInfoModal: uid = " + uid);
+
             ApiService.getUserDetails(uid)
                 .then(function getUserDetailsSuccess(user) {
                     $log.debug("mainCtrl: toggleAccountInfoModal success: " + user);
 
-                    $scope.editUser.email = user.UserName;
+                    $scope.editCurrentUser.email = user.UserName;
 
                     if (user.FirstName && user.FirstName.length > 0) {
-                        $scope.editUser.firstName = user.FirstName;
+                        $scope.editCurrentUser.firstName = user.FirstName;
                         $scope.user.FirstName = user.FirstName;
                     } else {
-                        $scope.editUser.firstName = undefined;
+                        $scope.editCurrentUser.firstName = undefined;
                         $scope.user.FirstName = undefined
                     }
 
                     if (user.LastName && user.LastName.length > 0) {
-                        $scope.editUser.lastName = user.LastName;
+                        $scope.editCurrentUser.lastName = user.LastName;
                         $scope.user.LastName = user.LastName;
                     } else {
-                        $scope.editUser.lastName = undefined;
+                        $scope.editCurrentUser.lastName = undefined;
                         $scope.user.LastName = undefined;
                     }
 
                     if (user.Gender && user.Gender.length > 0) {
-                        $scope.editUser.gender = user.Gender;
+                        $scope.editCurrentUser.gender = user.Gender;
                         $scope.user.Gender = user.Gender;
                     } else {
-                        $scope.editUser.gender = "Male";
+                        $scope.editCurrentUser.gender = "Male";
                         $scope.user.Gender = undefined;
                     }
 
-                    $scope.editUser.auth = user.UserAuthLvl;
-                    $scope.editUser.pass = undefined;
-                    $scope.editUser.currentUser = true;
+                    $scope.editCurrentUser.auth = user.UserAuthLvl;
+                    $scope.editCurrentUser.pass = undefined;
 
-                    $('#editUserModal').modal('toggle');
+                    $('#editCurrentUserModal').modal('toggle');
 
                 }, function getUserDetailsError(reason) {
                     $log.error("mainCtrl: toggleAccountInfoModal failed. reason: ", reason);
@@ -457,15 +468,15 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 .then(function getAllUsersSuccess(res) {
                     $log.debug("mainCtrl: getAllUsers success: " + res);
 
-                    $scope.admin = {};
-                    $scope.admin.allUsers = res;
+                    $scope.user.allUsers = res;
+                    $route.reload();
 
                 }, function getAllUsersError(reason) {
                     $log.error("mainCtrl: getAllUsers failed. reason: ", reason);
                 });
         };
 
-        var editUser = function(currentUser) {
+        var editUser = function() {
 
             if (!$scope.editUser.pass || $scope.editUser.pass <= 0) {
                 $scope.editUser.pass = "";
@@ -484,14 +495,36 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                     refreshAllUsers();
                     $route.reload();
 
-                    if (currentUser) {
-                        $scope.logoutRequest(true);
-                    } else {
-                        alert("User edited successfully");
-                    }
+                    alert("User edited successfully");
 
                 }, function editUserError(reason) {
                     $log.error("mainCtrl: editUser failed. reason: ", reason);
+                });
+        };
+
+        var editCurrentUser = function() {
+
+            if (!$scope.editCurrentUser.pass || $scope.editCurrentUser.pass <= 0) {
+                $scope.editCurrentUser.pass = "";
+                $scope.editCurrentUser.passChanged = 0;
+            } else {
+                $scope.editCurrentUser.passChanged = 1;
+            }
+
+            ApiService.editUser($scope.editCurrentUser)
+                .then(function editUserSuccess(res) {
+
+                    $log.debug("mainCtrl: editCurrentUser success: " + res);
+
+                    $('#editCurrentUserModal').modal('toggle');
+                    resetFormFields();
+                    refreshAllUsers();
+                    $route.reload();
+
+                    $scope.logoutRequest(true);
+
+                }, function editUserError(reason) {
+                    $log.error("mainCtrl: editCurrentUser failed. reason: ", reason);
                 });
         };
 
@@ -537,11 +570,11 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                         getAllUsers();
 
                     } else if ($scope.user.UserAuthLvl == 1) {
-                        $scope.getUserProjects();
-                        $scope.getUserInvestments();
+                        getUserProjects();
+                        getUserInvestments();
 
                     } else if ($scope.user.UserAuthLvl == 2) {
-                        $scope.getUserInvestments();
+                        getUserInvestments();
                     }
                 }
             }

@@ -1,3 +1,13 @@
+<!--
+/* Ariel Levin
+ * ariel.lvn89@gmail.com , http://about.me/ariel.levin
+ *
+ * Yoni Maymon
+ * yoni116@gmail.com
+ *
+ * */ -->
+
+
 <div class="main">
 
     <div ng-include src="'partials/carousel.html'"></div>
@@ -12,9 +22,6 @@
                 <p class="lead">
                     We combines the essence of the social enterprise movement with the hacker spirit of high-growth technology startups and gives advice for future entrepreneurs who want to build a big company while creating sustainable value for society at-large. It is coded by Ariel Levin & Yoni Maymon, Software Engineering students from Afeka Academic College of Engineering. Kickstart is free online and world wide.
                 </p>
-
-                <a ng-click="" class="btn btn-large btn-primary">Join Now</a>
-                <a ng-click="" class="btn btn-large btn-link">or login an existing account</a>
             </div>
         </div>
     </div>
@@ -27,7 +34,8 @@
     </div>
 
     <div class="row features">
-        <div class="col-sm-4 feature" ng-repeat="project in projectList | filter:main.searchText | filter:{ Active: 1 }">
+
+        <div class="col-sm-4 feature" ng-repeat="project in projectList | filter:user.searchText | filter:{ Active: 1 }">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4 class="panel-title">{{project.name}}</h4>

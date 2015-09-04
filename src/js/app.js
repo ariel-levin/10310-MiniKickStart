@@ -1,3 +1,13 @@
+/*
+* Ariel Levin
+* ariel.lvn89@gmail.com , http://about.me/ariel.levin
+*
+* Yoni Maymon
+* yoni116@gmail.com
+*
+* */
+
+
 var kickstartApp = angular.module('kickstartApp', [
     'ngRoute',
     'kickstartControllers',

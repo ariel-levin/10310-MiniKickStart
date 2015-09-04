@@ -319,9 +319,10 @@ class  KickStartDB
     {
 
         try {
-            $query = "SELECT Amount FROM backers WHERE UserName=:user";
+            $query = "SELECT Amount FROM backers WHERE UserName = :user AND ProjectId = :pid";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':user', $userName);
+            $this->stmt->bindParam(':pid', $pid);
             $this->stmt->execute();
             if ($this->stmt->rowCount() > 0) {
                 $amount = $amount + $this->stmt->fetchColumn();
@@ -331,10 +332,12 @@ class  KickStartDB
                 $this->stmt->bindParam(':user', $userName);
                 $this->stmt->bindParam(':amount', $amount);
                 $this->stmt->execute();
+
                 if ($this->stmt->rowCount() > 0)
                     return "OK";
                 else
                     return "Error";
+
             } else {
                 $query = "INSERT INTO backers(ProjectId,UserName,Amount) VALUES (:pid,:user,:amount)";
                 $this->stmt = $this->db->prepare($query);
@@ -342,9 +345,10 @@ class  KickStartDB
                 $this->stmt->bindParam(':user', $userName);
                 $this->stmt->bindParam(':amount', $amount);
                 $this->stmt->execute();
-                if ($this->stmt->rowCount() > 0) {
+
+                if ($this->stmt->rowCount() > 0)
                     return "OK";
-                } else
+                else
                     return "Error";
             }
 

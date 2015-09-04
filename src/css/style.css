@@ -1,3 +1,13 @@
+/*
+* Ariel Levin
+* ariel.lvn89@gmail.com , http://about.me/ariel.levin
+*
+* Yoni Maymon
+* yoni116@gmail.com
+*
+* */
+
+
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:700|Didact+Gothic);
 
 
@@ -351,4 +361,8 @@ body {
 .user-list .features .user-details {
     margin: 10px 0 5px 0;
     min-height: 100px;
+}
+
+#adminAccountEditBtn {
+    width: 75%;
 }
