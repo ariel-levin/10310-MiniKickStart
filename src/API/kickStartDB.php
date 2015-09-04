@@ -199,12 +199,12 @@ class  KickStartDB
     public function getProjectList()
     {
         try {
-            $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec, coalesce(money.gatherd,0) as moneybacked
+            $query = "SELECT id,MainPic as thumb, name, description, AmountNeeded, ROUND(TIMESTAMPDIFF(MICROSECOND,NOW(),EndAt) / 1000) AS milliSec,
+                      coalesce(money.gatherd,0) as moneybacked, (Now() <= EndAt) as Active, VideoYouTubeID
                       FROM projects
                       LEFT JOIN (
                       SELECT projectId , coalesce(sum(Amount),0) as gatherd FROM backers group by projectId) money ON money.projectId = projects.ID
-                      WHERE Now() <= EndAt
-                      ORDER BY EndAt Asc";
+                      ORDER BY Active Desc, EndAt Asc";
             $this->stmt = $this->db->query($query);
             $this->stmt->execute();
             $result = $this->stmt->fetchAll();
@@ -368,6 +368,24 @@ class  KickStartDB
             $this->stmt->bindParam(':desc', $desc);
             $this->stmt->bindParam(':url', $url);
             if ($this->stmt->execute())
+                return "OK";
+            else
+                return "Error";
+
+        }catch (PDOException $e) {
+            $this->stmt = null;
+            $final_result['reason'] = $e->getMessage();
+            return $final_result;
+        }
+    }
+
+    function deleteProject($pid){
+        try {
+            $query = "DELETE FROM projects WHERE ID = :pid";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':pid', $pid);
+            $this->stmt->execute();
+            if ($this->stmt->rowCount() > 0)
                 return "OK";
             else
                 return "Error";

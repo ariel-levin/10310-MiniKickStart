@@ -144,6 +144,14 @@ switch ($type) {
         }
         break;
 
+    case "deleteProject":
+        $result = $kickStartDB->deleteProject($_POST['pid']);
+        if ($result == "Error") {
+            $result = "couldn't delete project";
+            http_response_code(400);
+        }
+        break;
+
 }
 
 echo json_encode($result);

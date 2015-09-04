@@ -21,13 +21,13 @@
 
     <div class="row">
         <div class="col-12" id="ourProjectsHeader">
-            <h2><b>Our Projects</b> <small>we currently have <b>{{projectList.length}}</b> active projects, and counting..</small></h2>
+            <h2><b>Our Projects</b> <small>we currently have <b>{{getActiveProjectCount()}}</b> active projects, and counting..</small></h2>
             <p class="lead">Here is a list of our leading projects, you can filter them by the search bar above</p>
         </div>
     </div>
 
     <div class="row features">
-        <div class="col-sm-4 feature" ng-repeat="project in projectList | filter:main.searchText">
+        <div class="col-sm-4 feature" ng-repeat="project in projectList | filter:main.searchText | filter:{ Active: 1 }">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4 class="panel-title">{{project.name}}</h4>

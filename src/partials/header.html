@@ -51,7 +51,8 @@
                             <li role="separator" class="divider"></li>
 
                             <!-- admin options -->
-                            <li ng-show="user.UserAuthLvl == 0"><a ng-click="">Users Control</a></li>
+                            <li ng-show="user.UserAuthLvl == 0"><a href="">Users Control</a></li>
+                            <li ng-show="user.UserAuthLvl == 0"><a href="#/allProjects/{{user.Id}}">Projects Control</a></li>
 
                             <!-- project manager options -->
                             <li ng-show="user.UserAuthLvl == 1"><a ng-click="toggleModal('#newProjectModal')">New Project</a></li>

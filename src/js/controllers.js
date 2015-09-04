@@ -1,6 +1,6 @@
 var kickstartControllers = angular.module('kickstartControllers', []);
 
-kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, $route) {
+kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, $route, $filter) {
 
         var DEBUG = true;
 
@@ -33,6 +33,10 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                     $scope.projectList.forEach(function (p) {
                         $scope.getProjectTimeData(p);
                     });
+
+                    if ($scope.user.signed && $scope.user.UserAuthLvl == 0) {
+                        $scope.user.projects = $scope.projectList;
+                    }
 
                 }, function getProjectListError(reason) {
                     $log.error("mainCtrl: getProjectList failed. reason: ", reason);
@@ -101,9 +105,13 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                     $scope.user = res;
                     $scope.user.signed = true;
 
-                    if ($scope.user.UserAuthLvl == 1) {
+                    if ($scope.user.UserAuthLvl == 0) {
+                        $scope.user.projects = $scope.projectList;
+
+                    } else if ($scope.user.UserAuthLvl == 1) {
                         $scope.getUserProjects();
                         $scope.getUserInvestments();
+
                     } else if ($scope.user.UserAuthLvl == 2) {
                         $scope.getUserInvestments();
                     }
@@ -184,6 +192,20 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
                 });
         };
 
+        var deleteProject = function(pid) {
+
+            ApiService.deleteProject(pid)
+                .then(function editProjectSuccess(res) {
+
+                    $log.debug("mainCtrl: deleteProject success: " + res);
+                    alert("Deleted project successfully");
+                    refreshProjects();
+
+                }, function editProjectError(reason) {
+                    $log.error("mainCtrl: deleteProject failed. reason: ", reason);
+                });
+        };
+
         $scope.getUserProjects = function () {
             ApiService.getUserProjects($scope.user.UserName)
                 .then(function getUserProjectsSuccess(res) {
@@ -218,6 +240,23 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             project.daysLeft = Math.round(parseInt((project.milliSec / 1000) / 86400));
             project.fundPercent = Math.round((project.moneybacked / project.AmountNeeded) * 100);
             project.fundPercentWidth = Math.min(project.fundPercent, 100);
+        };
+
+        $scope.getActiveProjectCount = function () {
+            if ($scope.projectList) {
+                return $filter('filter')($scope.projectList, {Active: 1}).length;
+
+            } else {
+                return 0;
+            }
+        };
+
+        $scope.deleteProjectRequest = function (pid) {
+            var result = confirm("Are you sure you want to delete this project?");
+
+            if (result) {
+                deleteProject(pid);
+            }
         };
 
         var refreshProjects = function() {
@@ -302,9 +341,9 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
 
 
         if (DEBUG) {
-            //$scope.login.email = "a@b.c";
-            $scope.login.email = "a@a.a";
-            //$scope.login.email = "asd@asd.asd";
+            $scope.login.email = "a@b.c";               // admin
+            //$scope.login.email = "a@a.a";             // project manager
+            //$scope.login.email = "asd@asd.asd";       // project manager
             $scope.login.pass = "123123";
             $scope.userLogin(true);
         }

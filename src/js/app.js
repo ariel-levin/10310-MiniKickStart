@@ -20,6 +20,10 @@ kickstartApp.config(['$routeProvider', '$httpProvider',
                 templateUrl: 'partials/myProjects.html',
                 controller: 'mainCtrl'
             }).
+            when('/allProjects/:userId', {
+                templateUrl: 'partials/allProjects.html',
+                controller: 'mainCtrl'
+            }).
             when('/myInvestments/:userId', {
                 templateUrl: 'partials/myInvestments.html',
                 controller: 'mainCtrl'

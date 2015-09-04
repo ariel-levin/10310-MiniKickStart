@@ -308,6 +308,11 @@ body {
     margin: 0 10px 0 10px;
 }
 
+.admin-mode .project-list .features .btn {
+    width: 25%;
+    margin: 0 10px 0 10px;
+}
+
 .project-list .features .panel-title .project-active {
     color: #00EE1C;
     font-weight: bold;

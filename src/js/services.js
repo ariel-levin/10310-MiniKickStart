@@ -168,6 +168,26 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         return deferred.promise;
     }
 
+    function deleteProject(pid) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=deleteProject&pid=" + pid,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: deleteProject success: " + res);
+                deferred.resolve(res);
+
+            })
+            .error(function (reason) {
+                $log.error("ApiService: deleteProject failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
     function uploadProjectMainPic(file, pid) {
         var deferred = $q.defer();
 
@@ -232,7 +252,8 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         createNewProject: createNewProject,
         uploadProjectMainPic: uploadProjectMainPic,
         uploadProjectPics: uploadProjectPics,
-        editProject: editProject
+        editProject: editProject,
+        deleteProject: deleteProject
 
     };
 
