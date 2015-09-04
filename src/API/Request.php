@@ -21,8 +21,8 @@ $type = $_POST['request'];
 $result['status'] = "ERROR";
 switch ($type) {
 
-    case "test":
-        $result = $kickStartDB->test();
+    case "getAllUsers":
+        $result = $kickStartDB->getAllUsers();
         break;
 
     case "login":
@@ -148,6 +148,30 @@ switch ($type) {
         $result = $kickStartDB->deleteProject($_POST['pid']);
         if ($result == "Error") {
             $result = "couldn't delete project";
+            http_response_code(400);
+        }
+        break;
+
+    case "changeUserStatus":
+        $result = $kickStartDB->changeUserStatus($_POST['userName'],$_POST['status']);
+        if ($result == "Error") {
+            $result = "couldn't change user status";
+            http_response_code(400);
+        }
+        break;
+
+    case "updateUserInfo":
+        $result = $kickStartDB->updateUserInfo($_POST['userName'], $_POST['pass'], $_POST['authLvl'], $_POST['fname'], $_POST['lname'], $_POST['gen'],$_POST['passChanged']);
+        if ($result == "Error") {
+            $result = "couldn't change user info";
+            http_response_code(400);
+        }
+        break;
+
+    case "getUserInfo":
+        $result = $kickStartDB->getUserInfo($_POST['userName']);
+        if ($result == "Error") {
+            $result = "couldn't get user info";
             http_response_code(400);
         }
         break;

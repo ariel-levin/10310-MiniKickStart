@@ -1,12 +1,32 @@
 var kickstartServices = angular.module('kickstartServices', ['ngResource']);
 
-kickstartServices.factory('User', function () {
 
 
+kickstartServices.factory('SessionService', function() {
+    return {
+        set:function(key,value){
+            return sessionStorage.setItem(key,value);
+        },
+        get:function(key){
+            return sessionStorage.getItem(key);
+        },
+        destroy:function(key){
+            //$http.post('data/destroy_session.php');
+            return sessionStorage.removeItem(key);
+        }
+    };
+});
+
+kickstartServices.factory('Data', function() {
+
+    var data = {};
+    data.user = {};
+
+    return data;
 });
 
 
-kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
+kickstartServices.factory('ApiService', function ($http, $log, $q, Upload, SessionService) {
 
     function getProjectList() {
         var deferred = $q.defer();
@@ -75,6 +95,8 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         })
             .success(function (res) {
                 $log.debug("ApiService: userLogin success: " + res);
+                storeUserSession(res);
+
                 deferred.resolve(res);
             })
             .error(function (reason) {
@@ -82,6 +104,10 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
                 deferred.reject(reason);
             });
         return deferred.promise;
+    }
+
+    function userLogout() {
+        removeUserSession();
     }
 
     function userRegister(register) {
@@ -240,6 +266,130 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         return deferred.promise;
     }
 
+    function getAllUsers() {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=getAllUsers",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: getAllUsers success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: getAllUsers failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function editUser(user) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=updateUserInfo&userName=" + user.email + "&pass=" + user.pass +
+            "&authLvl=" + user.auth + "&fname=" + user.firstName + "&lname=" +
+            user.lastName + "&gen=" + user.gender + "&passChanged=" + user.passChanged,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: editUser success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: editUser failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function changeUserStatus(user) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=changeUserStatus&userName=" + user.email + "&status=" + user.status,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: changeUserStatus success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: changeUserStatus failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function getCurrentUser() {
+        var user = {};
+        user.UserName = SessionService.get('UserName');
+        user.Id = SessionService.get('Id');
+        user.UserAuthLvl = SessionService.get('UserAuthLvl');
+        if (user.UserName == null) {
+            return null;
+        } else {
+            return user;
+        }
+    }
+
+    function removeUserSession() {
+        SessionService.destroy('UserName');
+        SessionService.destroy('Id');
+        SessionService.destroy('UserAuthLvl');
+    };
+
+    function backProject(uid, pid, amount) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=backProject&pid=" + pid + "&userName=" + uid + "&amount=" + amount,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: backProject success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: backProject failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+    function getUserDetails(uid) {
+        var deferred = $q.defer();
+        $http({
+            method: 'post',
+            url: 'API/Request.php',
+            data: "request=getUserInfo&userName=" + uid,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+            .success(function (res) {
+                $log.debug("ApiService: getUserDetails success: " + res);
+                deferred.resolve(res);
+            })
+            .error(function (reason) {
+                $log.error("ApiService: getUserDetails failed: ", reason);
+                deferred.reject(reason);
+            });
+        return deferred.promise;
+    }
+
+
+
+    var storeUserSession = function(user) {
+        SessionService.set('UserName', user.UserName);
+        SessionService.set('Id', user.Id);
+        SessionService.set('UserAuthLvl', user.UserAuthLvl);
+    };
+
+
 
 
     return {
@@ -253,7 +403,15 @@ kickstartServices.factory('ApiService', function ($http, $log, $q, Upload) {
         uploadProjectMainPic: uploadProjectMainPic,
         uploadProjectPics: uploadProjectPics,
         editProject: editProject,
-        deleteProject: deleteProject
+        deleteProject: deleteProject,
+        getAllUsers: getAllUsers,
+        editUser: editUser,
+        changeUserStatus: changeUserStatus,
+        userLogout: userLogout,
+        getCurrentUser: getCurrentUser,
+        removeUserSession: removeUserSession,
+        backProject: backProject,
+        getUserDetails: getUserDetails
 
     };
 

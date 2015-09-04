@@ -72,8 +72,37 @@
         <div class="col-sm-2 col-center">
             <button class="btn btn-success" ng-click="showBackers()">Show Backers</button>
         </div>
-        <div class="col-sm-2 col-center" ng-show="project.Active">
-            <button class="btn btn-danger" ng-click="">Back Project</button>
+        <div class="col-sm-2 col-center" ng-show="project.Active && (user.UserAuthLvl == 1 || user.UserAuthLvl == 2) && project.Owner != user.UserName">
+            <button class="btn btn-danger" ng-click="showBackForm()">Back Project</button>
+        </div>
+    </div>
+
+    <div class="row div-center" ng-show="backFormVisible">
+        <div class="col-sm-5 col-center project-backers" id="backAmountForm">
+
+            <form class="form-horizontal" name="backAmountForm" ng-submit="backProject()">
+
+                <div class="form-group">
+                    <label class="col-lg-3 control-label" for="inputInvestAmount">Amount</label>
+                    <div class="col-lg-9">
+                        <input class="form-control" type="number" name="inputInvestAmount" id="inputInvestAmount"
+                               placeholder="Amount to invest"
+                               ng-model="investAmount"
+                               ng-model-options="{updateOn: 'blur'}"
+                               min="1"
+                               required
+                               autofocus />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="pull-right btn-div">
+                        <input type="submit" class="btn btn-danger" value="Back the Project!" >
+                    </div>
+                </div>
+
+            </form>
+
         </div>
     </div>
 

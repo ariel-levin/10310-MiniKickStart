@@ -46,13 +46,13 @@
                         </a>
                         <ul class="dropdown-menu">
 
-                            <li><a ng-click="">Account Info</a></li>
+                            <li><a ng-click="toggleAccountInfoModal(user.UserName)">Account Info</a></li>
 
                             <li role="separator" class="divider"></li>
 
                             <!-- admin options -->
-                            <li ng-show="user.UserAuthLvl == 0"><a href="">Users Control</a></li>
-                            <li ng-show="user.UserAuthLvl == 0"><a href="#/allProjects/{{user.Id}}">Projects Control</a></li>
+                            <li ng-show="user.UserAuthLvl == 0"><a href="#/allUsers">Users Control</a></li>
+                            <li ng-show="user.UserAuthLvl == 0"><a href="#/allProjects">Projects Control</a></li>
 
                             <!-- project manager options -->
                             <li ng-show="user.UserAuthLvl == 1"><a ng-click="toggleModal('#newProjectModal')">New Project</a></li>
@@ -63,7 +63,7 @@
 
                             <li role="separator" class="divider"></li>
 
-                            <li><a ng-click="logoutRequest()">Logout</a></li>
+                            <li><a ng-click="logoutRequest(false)">Logout</a></li>
                         </ul>
                     </li>
 
@@ -77,3 +77,4 @@
 <div ng-include src="'partials/login.html'"></div>
 <div ng-include src="'partials/register.html'"></div>
 <div ng-include src="'partials/newProject.html'"></div>
+<div ng-include src="'partials/editUser.html'"></div>

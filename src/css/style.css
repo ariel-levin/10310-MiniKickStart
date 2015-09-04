@@ -278,47 +278,77 @@ body {
     font-family: 'Didact Gothic', sans-serif;
 }
 
+#backAmountForm {
+    background-color: rgba(198, 239, 214, 0.64);
+    border: 1px solid #212D3A;
+}
+
+#backAmountForm .form-group {
+    margin: 20px 10px 0 0;
+}
+
+#backAmountForm .btn-div {
+    margin: 0 15px 20px 0;
+}
+
 
 /********************************
 *   Project List
 *
 ********************************/
 
-.project-list {
+.feature-list {
     text-align: center;
 }
 
-.project-list .project-list-header {
+.feature-list-header {
     font-family: 'Ubuntu', sans-serif;
     text-align: center;
     font-size: 50px;
     color: #2C3E50;
 }
 
-.project-list .features {
+.features {
     margin: 55px 0 50px 0;
 }
 
-.project-list .features p {
+.feature-list .features p {
     min-height: 120px;
 }
 
-.project-list .features .btn {
+.feature-list .features .btn {
     width: 40%;
     margin: 0 10px 0 10px;
 }
 
-.admin-mode .project-list .features .btn {
+.admin-mode .feature-list .features .btn {
     width: 25%;
     margin: 0 10px 0 10px;
 }
 
-.project-list .features .panel-title .project-active {
+.feature-list .features .panel-title .project-active {
     color: #00EE1C;
     font-weight: bold;
 }
 
-.project-list .features .panel-title .project-ended {
+.feature-list .features .panel-title .project-ended {
     color: #FF6969;
     font-weight: bold;
+}
+
+
+
+/********************************
+*   User List
+*
+********************************/
+
+.user-list .features .btn {
+    width: 40%;
+    margin: 0 10px 0 10px;
+}
+
+.user-list .features .user-details {
+    margin: 10px 0 5px 0;
+    min-height: 100px;
 }

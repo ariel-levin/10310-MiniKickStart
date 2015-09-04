@@ -35,12 +35,11 @@ class  KickStartDB
     }
 
 
-    public function test()
+    public function getAllUsers()
     {
         try {
-            $query = "SELECT * FROM USERS";
+            $query = "SELECT UserName, FirstName, LastName, Gender, UserAuthLvl, Active FROM USERS ORDER BY UserAuthLvl ASC, UserName ASC";
             $this->stmt = $this->db->query($query);
-
             $result = $this->stmt->fetchAll();
             return $result;
 
@@ -62,7 +61,7 @@ class  KickStartDB
                 return "Wrong UserName Or Password";
 
             $c_pass = $this->calculatePassword($pass);
-            $query = "SELECT Id, UserName, UserAuthLvl FROM Users WHERE UserName=:user AND Password=:c_pass";
+            $query = "SELECT Id, UserName, UserAuthLvl FROM Users WHERE UserName=:user AND Password=:c_pass AND Active = 1";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':user', $user);
             $this->stmt->bindParam(':c_pass', $c_pass);
@@ -231,9 +230,8 @@ class  KickStartDB
                       ORDER BY Active Desc, EndAt Asc";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':userName', $userName);
-            $this->stmt->execute();
 
-            if ($this->stmt->rowCount() > 0) {
+            if ($this->stmt->execute()) {
                 $result = $this->stmt->fetchAll();
                 return $result;
             } else
@@ -261,9 +259,8 @@ class  KickStartDB
                       ORDER BY Active Desc, EndAt Asc";
             $this->stmt = $this->db->prepare($query);
             $this->stmt->bindParam(':userName', $userName);
-            $this->stmt->execute();
 
-            if ($this->stmt->rowCount() > 0) {
+            if ($this->stmt->execute()) {
                 $result = $this->stmt->fetchAll();
                 return $result;
             } else
@@ -394,6 +391,77 @@ class  KickStartDB
             $this->stmt = null;
             $final_result['reason'] = $e->getMessage();
             return $final_result;
+        }
+    }
+
+    function changeUserStatus($user, $stat){
+        try {
+            $query = "UPDATE users SET Active = :stat WHERE UserName = :user";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':user', $user);
+            $this->stmt->bindParam(':stat', $stat);
+
+            if ($this->stmt->execute())
+                return "OK";
+            else
+                return "Error";
+
+        }catch (PDOException $e) {
+            $this->stmt = null;
+            $final_result['reason'] = $e->getMessage();
+            return $final_result;
+        }
+    }
+
+    function updateUserInfo($user, $pass, $authLvl, $fName, $lName, $gen,$flag){
+        try {
+            if($flag) {
+                $c_pass = $this->calculatePassword($pass);
+                $query = "UPDATE users SET Password = :pass, UserAuthLvl =:auth, FirstName = :name, LastName =:lname, Gender = :gen  WHERE UserName = :user";
+                $this->stmt = $this->db->prepare($query);
+                $this->stmt->bindParam(':pass', $c_pass);
+            }
+            else {
+                $query = "UPDATE users SET UserAuthLvl =:auth, FirstName = :name, LastName =:lname, Gender = :gen  WHERE UserName = :user";
+                $this->stmt = $this->db->prepare($query);
+            }
+            $this->stmt->bindParam(':user', $user);
+            $this->stmt->bindParam(':auth', $authLvl);
+            $this->stmt->bindParam(':name', $fName);
+            $this->stmt->bindParam(':lname', $lName);
+            $this->stmt->bindParam(':gen', $gen);
+
+            if ($this->stmt->execute())
+                return "OK";
+            else
+                return "Error";
+
+        }catch (PDOException $e) {
+            $this->stmt = null;
+            $final_result['reason'] = $e->getMessage();
+            return $final_result;
+        }
+    }
+
+    public function getUserInfo($user)
+    {
+        try {
+
+            $query = "SELECT Id, UserName, FirstName, LastName, Gender, UserAuthLvl, Active FROM USERS WHERE UserName = :user";
+            $this->stmt = $this->db->prepare($query);
+            $this->stmt->bindParam(':user', $user);
+            $this->stmt->execute();
+
+            if ($this->stmt->rowCount() > 0) {
+                $result = $this->stmt->fetch();
+                return $result;
+            } else
+                return "Error";
+
+        } catch (PDOException $e) {
+            $this->stmt = null;
+            return $e->getMessage();
+
         }
     }
 

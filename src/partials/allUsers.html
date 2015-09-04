@@ -1,0 +1,53 @@
+<div class="admin-mode">
+
+    <div class="container user-list">
+
+        <div class="row">
+            <div class="col-12">
+                <h1 class="feature-list-header">All Users - Admin Mode</h1>
+            </div>
+        </div>
+
+        <div class="row features">
+            <div class="col-sm-4 feature" ng-repeat="u in admin.allUsers | filter:main.searchText">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            {{u.UserName}}
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="user-details">
+                            <div class="feature-text" ng-show="u.FirstName && u.FirstName.length > 0">
+                                First Name: {{u.FirstName}}
+                            </div>
+
+                            <div class="feature-text" ng-show="u.LastName && u.LastName.length > 0">
+                                Last Name: {{u.LastName}}
+                            </div>
+
+                            <div class="feature-text" ng-show="u.Gender && u.Gender.length > 0">
+                                Gender: {{u.Gender}}
+                            </div>
+
+                            <div class="feature-text">
+                                User Type:
+                                <span ng-show="u.UserAuthLvl == 0">Admin</span>
+                                <span ng-show="u.UserAuthLvl == 1">Project Manager</span>
+                                <span ng-show="u.UserAuthLvl == 2">Investor</span>
+                            </div>
+                        </div>
+
+                        <a ng-click="toggleModal('#editUserModal', 'user', u)" class="btn btn-large btn-primary">Edit</a>
+                        <a ng-click="changeUserStatusRequest(u.UserName, u.Active)" class="btn btn-large btn-danger" ng-show="u.Active == 1 && u.UserName != user.UserName">Deactivate</a>
+                        <a ng-click="changeUserStatusRequest(u.UserName, u.Active)" class="btn btn-large btn-success" ng-show="u.Active == 0">Activate</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div ng-include src="'partials/editUser.html'"></div>
