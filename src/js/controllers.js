@@ -126,6 +126,11 @@ kickstartControllers.controller('mainCtrl', function ($scope, $log, ApiService, 
             $(modal).modal('toggle');
         };
 
+        $scope.showMyInvestments = function () {
+            refreshProjects();
+            $location.url('/myInvestments/' + $scope.user.Id);
+        };
+
 
         var userLogin = function(isRegistered) {
             ApiService.userLogin($scope.login)
@@ -687,6 +692,12 @@ kickstartControllers.controller('projectCtrl', function ($scope, $log, ApiServic
 
             if (!$scope.user) {
                 alert("please login first");
+                return;
+            }
+
+            var result = confirm("Are you sure you want to back this project with " + $scope.investAmount + "$ ?");
+
+            if (!result) {
                 return;
             }
 

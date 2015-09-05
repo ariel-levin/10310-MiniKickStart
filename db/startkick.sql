@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 04, 2015 at 10:19 PM
+-- Generation Time: Sep 06, 2015 at 12:39 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,12 +39,19 @@ CREATE TABLE IF NOT EXISTS `backers` (
 --
 
 INSERT INTO `backers` (`projectId`, `UserName`, `Amount`) VALUES
-(13, 'a@a.a', 2000),
-(13, 'asd@asd.asd', 500),
-(13, 'test2', 1500),
-(14, 'a@a.a', 3000),
-(39, 'yoni@s-access.com', 3500),
-(46, 'asd@asd.asd', 500);
+(55, 'ariel@ks.com', 7050),
+(55, 'haim@walla.com', 2250),
+(55, 'val@gmail.com', 50),
+(56, 'haim@walla.com', 186),
+(56, 'shaul@gmail.com', 3000),
+(57, 'ariel@gmail.com', 80),
+(57, 'haim@walla.com', 489),
+(58, 'haim@walla.com', 200000),
+(58, 'inv@gmail.com', 520730),
+(59, 'haim@walla.com', 660),
+(60, 'haim@walla.com', 489),
+(61, 'haim@walla.com', 8900),
+(61, 'inv@gmail.com', 470);
 
 -- --------------------------------------------------------
 
@@ -58,45 +65,38 @@ CREATE TABLE IF NOT EXISTS `projectpic` (
   `Path` varchar(200) NOT NULL DEFAULT 'projects/default_image.png	',
   PRIMARY KEY (`ID`,`ProjectId`),
   KEY `pid_fk` (`ProjectId`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=92 ;
 
 --
 -- Dumping data for table `projectpic`
 --
 
 INSERT INTO `projectpic` (`ID`, `ProjectId`, `Path`) VALUES
-(1, 13, 'projects/default_image.png'),
-(2, 13, 'projects/13/a81b5eef8d0538d07a63144960a76928.png'),
-(15, 13, 'projects/13/6e770c82434bb924ef2703039f9eb83b.png'),
-(16, 13, 'projects/13/fb2666994d8718a6ace24f2953dca3da.jpg'),
-(17, 13, 'projects/13/c83783951efd844a7ecdd63a2f5f9008.png'),
-(18, 13, 'projects/13/7ccd64082e4646be1bafd8a890b72dff.png'),
-(19, 13, 'projects/13/5ef148cc6490730ee795c77d9b7be31f.png'),
-(20, 13, 'projects/13/526c63392f2bda84c84f1714390af8ff.jpg'),
-(21, 13, 'projects/13/94679472bddc261db52bcd70815d94ad.png'),
-(22, 13, 'projects/13/2b41c5e75f89b6ce91a0a7e9f0414362.jpg'),
-(23, 13, 'projects/13/f64b18357da16006f4a1923599abcfae.png'),
-(24, 13, 'projects/13/f6749d7013037ef71e19f852d0d49a9c.png'),
-(25, 13, 'projects/13/aba6a31e7f1784f35c6869a64d90e97e.png'),
-(26, 13, 'projects/13/d84c4e9b0561ffe53012301e2fa89128.jpg'),
-(33, 47, 'projects/47/4c3069d609ad5a5079b3d09eab013c88.png'),
-(34, 47, 'projects/47/d5342d6c16be12fa04479564e584a49a.jpg'),
-(35, 47, 'projects/47/9510321f8b79fa2df0ead2d0c5651c0f.png'),
-(36, 47, 'projects/47/c928039677ef8243f280568445bd0c26.png'),
-(37, 47, 'projects/47/24bba2e6a199ca9cf387df558a1fa3bb.png'),
-(38, 47, 'projects/47/35802306ca2ee8574e10805beb442311.jpg'),
-(39, 47, 'projects/47/ad2219265e1eb0dcf138be0211d66f23.png'),
-(40, 47, 'projects/47/72325c0c18422e09b850fc02e416c298.jpg'),
-(41, 47, 'projects/47/bcab930e9c66e89130b44bb54e6996bd.png'),
-(42, 47, 'projects/47/e19652ca8ca2f01cd8d076d9e882c1ec.png'),
-(43, 47, 'projects/47/41fda2b08c9fd9cf8320e50f0d69048c.png'),
-(44, 47, 'projects/47/588319a2a9659c5c28cc636705466412.jpg'),
-(45, 51, 'projects/51/dba748c2f03552cff77618771ca2924b.png'),
-(46, 51, 'projects/51/db8df349758b59a3b282cee140c28050.png'),
-(47, 52, 'projects/52/3dcbd45f22dff83e1f44f50cbcaff0ca.png'),
-(48, 52, 'projects/52/579df2736c511079742003ef6a33991a.png'),
-(49, 52, 'projects/52/7e530a7a50110ca77a08d409090bbb37.png'),
-(50, 52, 'projects/52/8d41dbfb43e0255cb59cb2dda83529c4.jpg');
+(58, 55, 'projects/55/a5550fc3cc2dd7553edd2f560ac98526.png'),
+(59, 55, 'projects/55/33ad5047152f918acd723ffb83e18462.jpg'),
+(60, 55, 'projects/55/1820890f2c060fae9d382bc9825c497a.png'),
+(61, 55, 'projects/55/f3755eb0f738180a5a401aaec016f694.png'),
+(62, 55, 'projects/55/8efc07507a790e8628c76b7f120e0b95.png'),
+(63, 55, 'projects/55/351adfbfd75e114bfd18eaf3762f3048.jpg'),
+(70, 58, 'projects/58/f10ccd6dc080e9776205990506a153c4.jpg'),
+(71, 58, 'projects/58/1c2d77be83dd977f35417af88d891c68.jpg'),
+(72, 58, 'projects/58/f08b979702e63fd6225da39145d1e871.jpg'),
+(73, 61, 'projects/61/612d8886d7058ae1c2a1cb2a698aef2a.jpg'),
+(74, 61, 'projects/61/8058d677cd86e2b1b2628e04fa8249e1.jpg'),
+(75, 61, 'projects/61/a1082c226e6db8d54fe6e0d85ebf5042.jpg'),
+(76, 56, 'projects/56/729232a329fb33060c428f0abf465bc3.jpg'),
+(77, 56, 'projects/56/b27a88cd33c3d6ffa831f27f7df47a07.jpg'),
+(78, 56, 'projects/56/a614e78440674f882dc9c5b3571e20c9.jpg'),
+(82, 57, 'projects/57/328634f811ae38c5e4e923b059d7d280.jpg'),
+(83, 57, 'projects/57/ef4f2af95d24022a470ae35326b730b9.jpg'),
+(84, 57, 'projects/57/d1098240325d604db68b670ac6fc131a.jpg'),
+(85, 57, 'projects/57/f72967250baddbfc2ea6fdf11c8686fb.jpg'),
+(86, 57, 'projects/57/ff69991ad979dbf0d740f418069dd438.jpg'),
+(87, 58, 'projects/58/d7704ec450e15b55955e4acbe33d8144.jpg'),
+(88, 58, 'projects/58/78b69a9d4235af10f5ce6b0ebecfddba.jpg'),
+(89, 61, 'projects/61/1edd291181facdd8b8e972591db1f83b.jpg'),
+(90, 61, 'projects/61/baf65ed13b0856370c8e6349e82f85da.jpg'),
+(91, 56, 'projects/56/71f5c1e2b0d7052c97652cf5d7ba6a37.jpg');
 
 -- --------------------------------------------------------
 
@@ -116,35 +116,20 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `Owner` varchar(30) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `Owner` (`Owner`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
 
 --
 -- Dumping data for table `projects`
 --
 
 INSERT INTO `projects` (`ID`, `Name`, `Description`, `AmountNeeded`, `MainPic`, `VideoYouTubeID`, `CreatedAt`, `EndAt`, `Owner`) VALUES
-(13, 'Project 1', 'Rooms oh fully taken by worse do. Points afraid but may end law lasted. Was out laughter raptures returned outweigh. Luckily cheered colonel me do we attacks on highest enabled. Tried law yet style child.', 5000, 'projects/13/a81b5eef8d0538d07a63144960a76928.png', '4XbWc4r4_iU', '2015-08-29 14:21:10', '2015-09-29 10:49:29', 'a@a.a'),
-(14, 'zxczxc', 'zxcxzc', 500, 'projects/default_image.png', NULL, '2015-08-11 21:00:00', '2015-08-31 21:00:00', 'a@a.a'),
-(20, 'Test New Project', 'Cras auctor nibh augue, quis ultricies ante ultrices sed. Praesent finibus ultricies turpis eu congue. Integer pulvinar, quam in sagittis sodales, felis leo blandit purus, et aliquet nibh est non velit. Donec sagittis gravida mollis. Maecenas mattis metus in cursus posuere.', 10000, 'projects/default_image.png', 'k4xsqw463Hs', '2015-09-02 20:56:35', '2016-07-30 17:56:09', 'a@a.a'),
-(21, 'Project 2', 'Nullam maximus ipsum in justo condimentum, commodo rhoncus tortor lacinia. Quisque nulla dolor, interdum vel tincidunt eget, auctor ac magna. Nullam varius orci nunc, eu gravida dui vehicula nec. Integer id vehicula orci.', 3000, 'projects/default_image.png', 'fwj8-0B1tUw', '2015-09-02 21:02:42', '2018-01-19 20:01:45', 'a@a.a'),
-(27, 'aaaaaa', 'aaaaaaaaaaaaaa', 123123, 'projects/default_image.png', 'undefined', '2015-09-02 21:26:21', '2015-09-18 18:26:13', 'a@a.a'),
-(28, 'bbbbbb', 'bbbbbbbbbbbbbbbbbbbb', 1231, 'projects/default_image.png', 'undefined', '2015-09-02 21:26:44', '2016-06-16 18:26:22', 'a@a.a'),
-(29, 'ccccc', 'cccccccccccccccccccccccccc', 30000, 'projects/default_image.png', 'QN1X6vXA-Y0', '2015-09-02 21:27:54', '2016-08-02 18:26:46', 'a@a.a'),
-(30, 'Project 3', 'sadlasl;kdja skldj askldjaklsdlasjdalksj lkasdj laskdjlaksjdlkasd', 6000, 'projects/default_image.png', 'undefined', '2015-09-03 17:40:46', '2015-09-10 14:39:00', 'a@a.a'),
-(32, 'aaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaa', 123, 'projects/default_image.png', 'undefined', '2015-09-03 18:38:01', '2015-09-03 15:37:39', 'a@a.a'),
-(34, 'aaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaa', 123, 'projects/34/e16ea1e959daca6735f0e8045e976cc5.png', 'undefined', '2015-09-03 18:52:11', '2015-09-03 15:51:50', 'a@a.a'),
-(35, 'asdasda', 'sdaadasdasasdasd', 121231, 'projects/default_image.png', 'undefined', '2015-09-03 19:01:36', '2015-09-03 16:01:26', 'a@a.a'),
-(39, 'aaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaa', 123123, 'projects/39/f4c7289672eebcd3f148202e7db474dd.jpg', 'undefined', '2015-09-03 19:44:26', '2015-09-04 16:44:13', 'a@a.a'),
-(40, 'bla bla yoni', 'lalalalalalala', 1231231, 'projects/40/b70c5b7f58df82293e967ff81831a8cb.jpg', 'undefined', '2015-09-03 19:44:58', '2015-09-04 16:44:30', 'a@a.a'),
-(42, 'asdasdas', 'dasdasdasdafdsfds sdasdsaads', 3214, 'projects/default_image.png', 'undefined', '2015-09-03 19:47:57', '2015-09-04 16:47:49', 'a@a.a'),
-(43, 'lolipop', 'sadsadasdsadas asd asdasdasd', 5000, 'projects/43/57bd48edfcb2f65d608a9a255ca56d9c.png', 'ey-5GqwlRMU', '2015-09-03 19:50:14', '2015-09-05 16:48:15', 'a@a.a'),
-(46, 'aaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaa', 123, 'projects/default_image.png', 'undefined', '2015-09-04 07:09:26', '2015-09-05 04:10:00', 'a@a.a'),
-(47, 'ccccccccccb', 'yoni ha manyak', 12313, 'projects/47/a6c458d9fce844dc3baec899dffbe43d.jpg', '_8Sh1CDDfmI', '2015-09-04 07:10:38', '2015-09-08 07:09:00', 'a@a.a'),
-(48, 'asdf asdf', 'asdasfsadasdasdasdasd', 3070, 'projects/default_image.png', 'undefined', '2015-09-04 08:45:28', '2015-09-07 08:41:00', 'a@a.a'),
-(49, 'gggggggg', 'sdgfsdfsdfsdfsdsdfsdf', 5000, 'projects/default_image.png', 'undefined', '2015-09-04 08:47:37', '2015-09-05 08:47:00', 'a@a.a'),
-(50, 'hhhhhhhhhhhhh', 'sdadsadsadsadsadsadaad', 6000, 'projects/50/681f0b4a4aca129be7f7f29be6690009.png', 'undefined', '2015-09-04 08:48:02', '2015-09-05 08:47:00', 'a@a.a'),
-(51, 'tttttttt', 'dsfdsfdsfsdfsdfsdfsd', 300, 'projects/default_image.png', 'undefined', '2015-09-04 08:48:31', '2015-09-05 08:48:00', 'a@a.a'),
-(52, 'Bla bla', 'aslkdjalksdjaklsdhjakjshd aksjhd ad1234 jke rjk3l4h224kjhl', 9000, 'projects/52/25977ddc870cfebb4c13835ae74b5618.png', 'undefined', '2015-09-04 18:45:09', '2015-09-07 18:44:00', 'asd@asd.asd');
+(55, 'Project 2', 'Scarcely on striking packages by so property in delicate. Up or well must less rent read walk so be. Easy sold at do hour sing spot. Any meant has cease too the decay. Since party burst am it match', 10000, 'projects/55/b6485f20b9b37b56eef2d6a277f8e1c4.png', 'Q6vVuj3iggE', '2015-09-05 16:09:05', '2015-12-10 17:07:00', 'ariel@gmail.com'),
+(56, 'Project 3', 'Stronger unpacked felicity to of mistaken. Fanny at wrong table ye in. Be on easily cannot innate in lasted months on. Differed and and felicity steepest mrs age outweigh. Opinions learning likewise daughter now age outweigh.', 7000, 'projects/56/e213b8cce34b2778a485c7ed0bf1fc8d.png', '5X_g9J-uZ7k', '2015-09-05 16:09:48', '2016-01-10 17:09:00', 'ariel@gmail.com'),
+(57, 'Project 4', 'Situation admitting promotion at or to perceived be. Mr acuteness we as estimable enjoyment up. An held late as felt know. Learn do allow solid to grave. Middleton suspicion age her attention. Chiefly several bed its wishing.', 800, 'projects/57/5f63fa14ec3ee86f2e147a4b87f8a497.jpg', 'hHEA1Azun5Q', '2015-09-05 16:13:19', '2016-09-16 16:12:00', 'val@gmail.com'),
+(58, 'KickStart', 'We combines the essence of the social enterprise movement with the hacker spirit of high-growth technology startups and gives advice for future entrepreneurs who want to build a big company while creating sustainable value for society at-large.', 1000000, 'projects/58/248757aa1d447443d87cba31cd764c01.png', 'MXKEccRiMeQ', '2015-09-05 16:28:45', '2015-09-07 20:00:00', 'ariel@ks.com'),
+(59, 'Project 5', 'Rooms oh fully taken by worse do. Points afraid but may end law lasted. Was out laughter raptures returned outweigh. Luckily cheered colonel me do we attacks on highest enabled. Tried law yet style child.', 6000, 'projects/59/849d3557b149657a25a5609984519db3.png', 'DyewSPpreGU', '2015-07-01 16:30:47', '2015-08-01 17:28:00', 'ariel@ks.com'),
+(60, 'Project 6', 'Delighted consisted newspaper of unfeeling as neglected so. Tell size come hard mrs and four fond are. Of in commanded earnestly resources it. At quitting in strictly up wandered of relation answered felicity.', 7000, 'projects/60/cb1e01750cd246a352624a422e68f436.jpg', 'HRbzwWsvShc', '2015-08-18 16:33:13', '2015-09-01 16:30:00', 'yoni@gmail.com'),
+(61, 'Project 1', 'Whole wound wrote at whose to style in. Figure ye innate former do so we. Shutters but sir yourself provided you required his. So neither related he am do believe. Nothing but you hundred had use regular.', 20000, 'projects/61/6c3d836cb474bd20da850dc984f15528.png', 'ISAdFizEOdU', '2015-09-05 16:34:01', '2015-10-22 16:33:00', 'yoni@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -163,22 +148,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Active` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`UserName`),
   UNIQUE KEY `id` (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`Id`, `UserName`, `Password`, `UserAuthLvl`, `FirstName`, `LastName`, `Gender`, `Active`) VALUES
-(1, 'a@a.a', '580539cf96c3de01abf3bdd25e05b108', '1', 'Ariel', 'Levin', 'Male', 1),
-(2, 'a@b.c', '580539cf96c3de01abf3bdd25e05b108', '0', 'ariel', 'levin', 'Male', 1),
-(9, 'aasasd@basadsd.csdas', '996f71b6f348469d27d5a586e020f044', '2', 'sadasdas', 'asdsadsadsad', 'Female', 1),
-(3, 'asd@asd.asd', '580539cf96c3de01abf3bdd25e05b108', '1', 'Ryan', 'Woody', 'Male', 1),
-(8, 'asdas@p.c', 'ef775988943825d2871e1cfa75473ec0', '2', 'foo', 'goo', 'Male', 1),
-(4, 'test', '2414e7de746416b3b3baa7f0f23d8067', '0', 'test', 'tester', 'Male', 1),
-(5, 'test1', 'b740f3ca40f9544ffd7e65dd6f65f7fb', '0', '', '', '', 1),
-(6, 'test2', '2414e7de746416b3b3baa7f0f23d8067', '1', 'toster', 'oven', 'Male', 1),
-(7, 'yoni@s-access.com', '448da7d4bf06cc984bfcdd891445971b', '1', 'Yoni', 'Maymon', 'Male', 1);
+(14, 'admin@ks.com', '580539cf96c3de01abf3bdd25e05b108', '0', 'Kick', 'Start', 'Male', 1),
+(13, 'ariel@gmail.com', '448da7d4bf06cc984bfcdd891445971b', '1', 'Ariel', 'Cohen', 'Male', 1),
+(18, 'ariel@ks.com', '580539cf96c3de01abf3bdd25e05b108', '1', 'Ariel', 'Levin', 'Male', 1),
+(17, 'haim@walla.com', '448da7d4bf06cc984bfcdd891445971b', '2', 'Haim', 'Haim', 'Male', 1),
+(19, 'inv@gmail.com', '580539cf96c3de01abf3bdd25e05b108', '2', 'Ryan', 'Woody', 'Male', 1),
+(20, 'shaul@gmail.com', '448da7d4bf06cc984bfcdd891445971b', '2', 'shaul', 'shaul', 'Female', 1),
+(15, 'val@gmail.com', '448da7d4bf06cc984bfcdd891445971b', '1', 'Val', 'Val', 'Female', 1),
+(16, 'yoni@gmail.com', '580539cf96c3de01abf3bdd25e05b108', '1', 'Yoni', 'Maymon', 'Male', 1);
 
 --
 -- Constraints for dumped tables
